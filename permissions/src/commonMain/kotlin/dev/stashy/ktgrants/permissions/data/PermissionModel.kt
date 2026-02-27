@@ -1,10 +1,9 @@
-package dev.stashy.ktgrants.permissions.data.model
+package dev.stashy.ktgrants.permissions.data
 
 import dev.stashy.ktgrants.KtgrantDsl
-import dev.stashy.ktgrants.permissions.data.Permission
-import dev.stashy.ktgrants.permissions.data.PermissionContainer
+import dev.stashy.ktgrants.permissions.data.model.*
 
-public sealed interface PermissionModel {
+public interface PermissionModel {
     public fun process(permissions: Sequence<Permission>): PermissionContainer
 
     public companion object {

@@ -1,10 +1,7 @@
 package dev.stashy.ktgrants.permissions.data.model
 
 import dev.stashy.ktgrants.KtgrantDsl
-import dev.stashy.ktgrants.permissions.data.Grant
-import dev.stashy.ktgrants.permissions.data.Permission
-import dev.stashy.ktgrants.permissions.data.PermissionContainer
-import dev.stashy.ktgrants.permissions.data.PermissionSet
+import dev.stashy.ktgrants.permissions.data.*
 
 internal class GraphModel(
     private val grantMap: Map<Grant, Set<Grant>> = mapOf()
