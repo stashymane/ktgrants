@@ -13,7 +13,8 @@ plugins {
 }
 
 include(
-    ":permissions"
+    "permissions",
+    "kotest-assertions"
 )
 
 rootProject.name = "ktgrants"
