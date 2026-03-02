@@ -1,7 +1,7 @@
 package dev.stashy.ktgrants.permissions.api
 
-import dev.stashy.ktgrants.permissions.data.Group
-import dev.stashy.ktgrants.permissions.data.Subject
+import dev.stashy.ktgrants.permissions.Group
+import dev.stashy.ktgrants.permissions.Subject
 
 public sealed interface Permissible {
     public interface Entity : Permissible {
@@ -35,7 +35,7 @@ public sealed interface Permissible {
 
         public inline operator fun <reified T> invoke(subjectProvider: Subject.Provider): Entity =
             invoke(Group(T::class), subjectProvider.toSubject())
-        
+
         public inline operator fun <reified T> invoke(): Type =
             invoke(Group(T::class))
     }

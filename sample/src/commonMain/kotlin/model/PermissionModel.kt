@@ -1,8 +1,8 @@
 package model
 
-import dev.stashy.ktgrants.annotations.GrantContainer
-import dev.stashy.ktgrants.permissions.data.Grant
-import dev.stashy.ktgrants.permissions.data.PermissionModel
+import dev.stashy.ktgrants.annotations.GrantObject
+import dev.stashy.ktgrants.permissions.Grant
+import dev.stashy.ktgrants.permissions.PermissionModel
 
 object AppModel : PermissionModel by PermissionModel.build({
     graph {
@@ -10,7 +10,7 @@ object AppModel : PermissionModel by PermissionModel.build({
     }
 })
 
-@GrantContainer
+@GrantObject
 object Grants {
     val Read = Grant("read")
     val Write = Grant("write")

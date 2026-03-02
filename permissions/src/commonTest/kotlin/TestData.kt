@@ -1,6 +1,6 @@
+import dev.stashy.ktgrants.permissions.Grant
+import dev.stashy.ktgrants.permissions.Subject
 import dev.stashy.ktgrants.permissions.api.Permissible
-import dev.stashy.ktgrants.permissions.data.Grant
-import dev.stashy.ktgrants.permissions.data.Subject
 import kotlinx.serialization.Serializable
 import kotlin.jvm.JvmInline
 

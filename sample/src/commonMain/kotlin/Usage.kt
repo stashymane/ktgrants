@@ -1,6 +1,6 @@
+import dev.stashy.ktgrants.permissions.Permission
+import dev.stashy.ktgrants.permissions.Subject
 import dev.stashy.ktgrants.permissions.api.Permissible
-import dev.stashy.ktgrants.permissions.data.Permission
-import dev.stashy.ktgrants.permissions.data.Subject
 import generated.PermissionContext.on
 import generated.permission
 import model.*

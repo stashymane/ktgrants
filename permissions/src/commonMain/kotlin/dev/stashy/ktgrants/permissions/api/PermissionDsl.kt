@@ -1,9 +1,9 @@
 package dev.stashy.ktgrants.permissions.api
 
-import dev.stashy.ktgrants.permissions.data.Grant
-import dev.stashy.ktgrants.permissions.data.Group
-import dev.stashy.ktgrants.permissions.data.Permission
-import dev.stashy.ktgrants.permissions.data.Subject
+import dev.stashy.ktgrants.permissions.Grant
+import dev.stashy.ktgrants.permissions.Group
+import dev.stashy.ktgrants.permissions.Permission
+import dev.stashy.ktgrants.permissions.Subject
 
 public interface PermissionDsl {
     public infix fun Grant.on(target: Permissible.Entity): Permission = Permission(target.group, target.subject, this)

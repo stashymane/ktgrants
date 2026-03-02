@@ -1,6 +1,6 @@
 package model
 
-import dev.stashy.ktgrants.permissions.data.Subject
+import dev.stashy.ktgrants.permissions.Subject
 import kotlin.jvm.JvmInline
 
 @JvmInline

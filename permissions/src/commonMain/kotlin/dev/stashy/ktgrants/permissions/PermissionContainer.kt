@@ -1,4 +1,4 @@
-package dev.stashy.ktgrants.permissions.data
+package dev.stashy.ktgrants.permissions
 
 public fun interface PermissionContainer {
     /**

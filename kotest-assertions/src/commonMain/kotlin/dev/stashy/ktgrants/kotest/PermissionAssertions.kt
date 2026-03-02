@@ -1,7 +1,7 @@
 package dev.stashy.ktgrants.kotest
 
-import dev.stashy.ktgrants.permissions.data.Permission
-import dev.stashy.ktgrants.permissions.data.PermissionContainer
+import dev.stashy.ktgrants.permissions.Permission
+import dev.stashy.ktgrants.permissions.PermissionContainer
 import io.kotest.matchers.Matcher
 import io.kotest.matchers.MatcherResult
 import io.kotest.matchers.should

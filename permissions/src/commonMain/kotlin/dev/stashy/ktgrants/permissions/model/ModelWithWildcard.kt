@@ -1,7 +1,7 @@
-package dev.stashy.ktgrants.permissions.data.model
+package dev.stashy.ktgrants.permissions.model
 
 import dev.stashy.ktgrants.annotations.KtgrantDsl
-import dev.stashy.ktgrants.permissions.data.*
+import dev.stashy.ktgrants.permissions.*
 
 private typealias PermissionMapper = (Permission) -> Permission
 

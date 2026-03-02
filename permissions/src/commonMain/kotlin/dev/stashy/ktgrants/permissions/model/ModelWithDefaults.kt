@@ -1,8 +1,8 @@
-package dev.stashy.ktgrants.permissions.data.model
+package dev.stashy.ktgrants.permissions.model
 
-import dev.stashy.ktgrants.permissions.data.Permission
-import dev.stashy.ktgrants.permissions.data.PermissionContainer
-import dev.stashy.ktgrants.permissions.data.PermissionModel
+import dev.stashy.ktgrants.permissions.Permission
+import dev.stashy.ktgrants.permissions.PermissionContainer
+import dev.stashy.ktgrants.permissions.PermissionModel
 
 internal class ModelWithDefaults(
     private val defaults: Set<Permission>,

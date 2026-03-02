@@ -1,8 +1,6 @@
-package dev.stashy.ktgrants.permissions.data
+package dev.stashy.ktgrants.permissions
 
-import dev.stashy.ktgrants.permissions.data.Permission.Companion.parse
-import dev.stashy.ktgrants.permissions.pascalToKebab
-import dev.stashy.ktgrants.permissions.verifyValue
+import dev.stashy.ktgrants.permissions.Permission.Companion.parse
 import kotlinx.serialization.Serializable
 import kotlin.jvm.JvmInline
 import kotlin.reflect.KClass

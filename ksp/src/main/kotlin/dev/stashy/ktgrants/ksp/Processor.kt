@@ -7,7 +7,10 @@ import com.google.devtools.ksp.symbol.KSPropertyDeclaration
 import com.google.devtools.ksp.validate
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ksp.writeTo
-import dev.stashy.ktgrants.annotations.GrantContainer
+import dev.stashy.ktgrants.annotations.GrantObject
+import dev.stashy.ktgrants.permissions.Grant
+import dev.stashy.ktgrants.permissions.Permission
+import dev.stashy.ktgrants.permissions.api.PermissionDsl
 
 public class Processor(
     private val codeGenerator: CodeGenerator,
@@ -17,7 +20,7 @@ public class Processor(
     private var containerMetadata: ContainerMetadata? = null
 
     override fun process(resolver: Resolver): List<KSAnnotated> {
-        val symbols = resolver.getSymbolsWithAnnotation(GrantContainer::class.qualifiedName!!)
+        val symbols = resolver.getSymbolsWithAnnotation(GrantObject::class.qualifiedName!!)
             .filter(KSAnnotated::validate)
             .filterIsInstance<KSClassDeclaration>()
             .toList()
@@ -27,7 +30,7 @@ public class Processor(
         }
 
         if (symbols.size > 1) {
-            throw IllegalStateException("Only one object can be annotated with `@GrantContainer`")
+            throw IllegalStateException("Only one object can be annotated with `@GrantObject`")
         }
 
         val container = symbols.first()
@@ -89,12 +92,11 @@ public class Processor(
                 val propertyType = property.type.resolve().declaration
 
                 when {
-                    // If it's a Grant property
-                    propertyType.qualifiedName?.asString() == "dev.stashy.ktgrants.permissions.data.Grant" -> {
+                    propertyType.qualifiedName?.asString() == Grant::class.qualifiedName!! -> {
                         typeBuilder.addProperty(
                             PropertySpec.builder(
                                 propertyName,
-                                ClassName("dev.stashy.ktgrants.permissions.data", "Grant")
+                                Grant::class.asClassName()
                             )
                                 .getter(
                                     FunSpec.getterBuilder()
@@ -145,7 +147,7 @@ public class Processor(
 
         // Create PermissionContext object
         val permissionContextObject = TypeSpec.objectBuilder("PermissionContext")
-            .addSuperinterface(ClassName("dev.stashy.ktgrants.permissions.api", "PermissionDsl"))
+            .addSuperinterface(PermissionDsl::class.asClassName())
             .addSuperinterface(ClassName(config.generatedPackage, accessorInterfaceName))
             .build()
 
@@ -157,11 +159,11 @@ public class Processor(
                     "fn",
                     LambdaTypeName.get(
                         receiver = ClassName(config.generatedPackage, "PermissionContext"),
-                        returnType = ClassName("dev.stashy.ktgrants.permissions.data", "Permission")
+                        returnType = Permission::class.asClassName()
                     )
                 ).build()
             )
-            .returns(ClassName("dev.stashy.ktgrants.permissions.data", "Permission"))
+            .returns(Permission::class.asClassName())
             .addCode("return fn(PermissionContext)")
             .build()
 

@@ -1,7 +1,7 @@
 package model
 
-import dev.stashy.ktgrants.permissions.data.Permission
-import dev.stashy.ktgrants.permissions.data.PermissionContainer
+import dev.stashy.ktgrants.permissions.Permission
+import dev.stashy.ktgrants.permissions.PermissionContainer
 
 data class User(
     val id: Id,
