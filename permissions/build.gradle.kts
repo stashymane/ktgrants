@@ -14,8 +14,15 @@ kotlin {
         commonMain.dependencies {
             implementation(libs.kotlinx.serialization.core)
         }
+
         commonTest.dependencies {
+            implementation(projects.kotestAssertions)
             implementation(libs.kotest.assertions)
+            implementation(libs.kotlin.test)
+        }
+
+        all {
+            languageSettings.enableLanguageFeature("ContextParameters")
         }
     }
 

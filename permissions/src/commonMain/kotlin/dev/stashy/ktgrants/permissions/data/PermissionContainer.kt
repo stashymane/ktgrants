@@ -14,4 +14,7 @@ private constructor(
     constructor(permissions: Sequence<Permission>) : this(permissions.toHashSet())
 
     override fun includes(permission: Permission): Boolean = backing.contains(permission)
+    override fun toString(): String {
+        return "PermissionSet(${backing.joinToString(", ")})"
+    }
 }

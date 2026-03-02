@@ -27,7 +27,7 @@ internal class ModelWithWildcard(
 @KtgrantDsl
 public class WildcardConfig {
     public var group: Boolean = false
-    public var subject: Boolean = false
+    public var subject: Boolean = true
     public var grant: Boolean = false
 
     internal fun build(): List<PermissionMapper> = buildList {
