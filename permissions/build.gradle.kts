@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.dokka)
+    alias(libs.plugins.mavenPublish)
 }
 
 kotlin {
@@ -8,8 +9,15 @@ kotlin {
     explicitApi()
 
     jvm()
+
+    js {
+        nodejs()
+    }
     @Suppress("OPT_IN_USAGE")
-    wasmJs()
+    wasmJs {
+        nodejs()
+    }
+
 
     sourceSets {
         commonMain.dependencies {

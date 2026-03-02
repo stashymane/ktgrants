@@ -3,6 +3,7 @@ jvm = "25"
 kotlin = "2.3.10"
 kotlinx-serialization = "1.10.0"
 dokka = "2.1.0"
+mavenPublish = "0.36.0"
 
 ksp = "2.3.6"
 kotlinpoet = "2.2.0"
@@ -28,6 +29,7 @@ kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref 
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+mavenPublish = { id = "com.vanniktech.maven.publish", version.ref = "mavenPublish" }
 
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
