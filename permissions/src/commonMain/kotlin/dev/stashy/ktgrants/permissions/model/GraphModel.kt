@@ -6,7 +6,7 @@ import dev.stashy.ktgrants.permissions.*
 internal class GraphModel(
     private val grantMap: Map<Grant, Set<Grant>> = mapOf()
 ) : PermissionModel {
-    override fun process(permissions: Sequence<Permission>): PermissionContainer = PermissionSet(
+    override fun process(permissions: Sequence<Permission>): PermissionCollection = PermissionSet(
         permissions.fold(sequenceOf()) { sequence, permission ->
             val grants = grantMap[permission.grant]
                 ?: return@fold sequence + permission

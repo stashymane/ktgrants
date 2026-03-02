@@ -1,9 +1,9 @@
 package model
 
 import dev.stashy.ktgrants.permissions.Permission
-import dev.stashy.ktgrants.permissions.PermissionContainer
+import dev.stashy.ktgrants.permissions.PermissionCollection
 
 data class User(
     val id: Id,
     val permissions: Set<Permission>
-) : PermissionContainer by AppModel.process(permissions)
+) : PermissionCollection by AppModel.process(permissions)

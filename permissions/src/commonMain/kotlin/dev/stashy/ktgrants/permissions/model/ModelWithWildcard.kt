@@ -11,12 +11,12 @@ internal class ModelWithWildcard(
 ) : PermissionModel by wrapped {
     private val mappers: List<PermissionMapper> = config.build()
 
-    override fun process(permissions: Sequence<Permission>): PermissionContainer =
-        ContainerWrapper(wrapped.process(permissions))
+    override fun process(permissions: Sequence<Permission>): PermissionCollection =
+        CollectionWrapper(wrapped.process(permissions))
 
-    private inner class ContainerWrapper(
-        private val delegate: PermissionContainer
-    ) : PermissionContainer {
+    private inner class CollectionWrapper(
+        private val delegate: PermissionCollection
+    ) : PermissionCollection {
         override fun includes(permission: Permission): Boolean {
             if (delegate.includes(permission)) return true
             return mappers.any { delegate.includes(it(permission)) }
