@@ -29,6 +29,7 @@ jobs:
     if: github.ref_type == 'branch' && github.ref_name == 'main'
     needs: prepare
     uses: ./.github/workflows/x-publish.yml
+    secrets: inherit
     with:
       snapshot: 'true'
       version: ${{ needs.prepare.outputs.version-date }}
@@ -38,6 +39,7 @@ jobs:
     if: github.ref_type == 'tag'
     needs: prepare
     uses: ./.github/workflows/x-publish.yml
+    secrets: inherit
     with:
       snapshot: 'false'
       version: ${{ needs.prepare.outputs.release-version }}
