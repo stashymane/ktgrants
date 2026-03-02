@@ -43,6 +43,8 @@ private fun flatten(graph: Map<Grant, Set<Grant>>): Map<Grant, Set<Grant>> {
         val directGrants = graph[grant] ?: return setOf(grant)
         val resolvedGrants = directGrants.flatMapTo(mutableSetOf(), ::resolve)
 
+        resolvedGrants.add(grant)
+
         result[grant] = resolvedGrants
         visited.remove(grant)
         return resolvedGrants
