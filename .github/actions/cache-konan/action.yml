@@ -1,0 +1,17 @@
+name: Cache Konan dependencies
+author: aesth
+
+inputs:
+  path:
+    description: "Path to Konan dependencies."
+    default: ~/.konan
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Cache build tooling
+      uses: actions/cache@v5
+      with:
+        path: ${{ inputs.path }}
+        key: konan-${{ runner.os }}-${{ hashFiles('gradle/kotlin.versions.toml') }}

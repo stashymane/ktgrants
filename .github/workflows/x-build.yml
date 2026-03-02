@@ -1,0 +1,30 @@
+name: Build project
+on:
+  workflow_call:
+    secrets:
+      GRADLE_ENCRYPTION_KEY:
+        required: true
+
+jobs:
+  build:
+    name: Build project
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Prepare Java & Gradle
+        uses: ./.github/actions/prepare-gradle
+        with:
+          gradle-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
+          cache-overwrite-existing: 'true'
+
+      - name: Check project
+        run: ./gradlew check
+
+#      - name: Upload build reports
+#        uses: actions/upload-artifact@v7
+#        if: always()
+#        with:
+#          name: build-reports
+#          path: '**/build/reports/'

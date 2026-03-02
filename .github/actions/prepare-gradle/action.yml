@@ -1,0 +1,45 @@
+name: Prepare Java & Gradle
+author: aesth
+
+inputs:
+  jvm-version:
+    default: '25'
+    description: 'The version of the JVM to build with'
+  jvm-distribution:
+    default: temurin
+    description: 'JVM distribution to build with'
+  gradle-encryption-key:
+    required: true
+    description: |
+      Gradle configuration cache encryption key.
+      Generate a key by following the Gradle docs (https://docs.gradle.org/8.6/userguide/configuration_cache.html#config_cache:secrets:configuring_encryption_key)
+  cache-overwrite-existing:
+    default: 'false'
+    description: When 'true', a pre-existing Gradle User Home will not prevent the cache from being restored.
+
+runs:
+  using: composite
+
+  steps:
+    - name: Set up ${{ inputs.jvm-distribution }} ${{ inputs.jvm-version }} JDK
+      uses: actions/setup-java@v5
+      with:
+        distribution: ${{ inputs.jvm-distribution }}
+        java-version: ${{ inputs.jvm-version }}
+
+    - name: Fix Gradle permissions
+      if: runner.os == 'Linux'
+      run: chmod +x ./gradlew
+      shell: sh
+
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v5
+      with:
+        cache-encryption-key: ${{ inputs.gradle-encryption-key }}
+        cache-overwrite-existing: ${{ inputs.cache-overwrite-existing }}
+        build-scan-publish: true
+        build-scan-terms-of-use-url: 'https://gradle.com/terms-of-service'
+        build-scan-terms-of-use-agree: 'yes'
+
+    - name: Cache build tooling
+      uses: ./.github/actions/cache-konan

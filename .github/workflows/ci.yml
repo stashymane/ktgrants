@@ -1,0 +1,20 @@
+name: Build project
+concurrency:
+  group: ci
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - "main"
+  pull_request:
+    branches:
+      - "main"
+
+jobs:
+  build:
+    name: Build project
+    uses: ./.github/workflows/x-build.yml
+    secrets: inherit
+    permissions:
+      contents: write
