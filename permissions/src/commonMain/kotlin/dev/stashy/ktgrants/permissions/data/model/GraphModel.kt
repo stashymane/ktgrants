@@ -1,6 +1,6 @@
 package dev.stashy.ktgrants.permissions.data.model
 
-import dev.stashy.ktgrants.KtgrantDsl
+import dev.stashy.ktgrants.annotations.KtgrantDsl
 import dev.stashy.ktgrants.permissions.data.*
 
 internal class GraphModel(

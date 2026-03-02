@@ -1,10 +1,11 @@
 package dev.stashy.ktgrants.permissions.data
 
-import dev.stashy.ktgrants.KtgrantDsl
+import dev.stashy.ktgrants.annotations.KtgrantDsl
 import dev.stashy.ktgrants.permissions.data.model.*
 
 public interface PermissionModel {
     public fun process(permissions: Sequence<Permission>): PermissionContainer
+    public fun process(permissions: Set<Permission>): PermissionContainer = process(permissions.asSequence())
 
     public companion object {
         public fun build(builder: PermissionModelBuilder.() -> Unit): PermissionModel =

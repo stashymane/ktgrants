@@ -14,7 +14,9 @@ plugins {
 
 include(
     "permissions",
-    "kotest-assertions"
+    "kotest-assertions",
+    "ksp",
+    "sample"
 )
 
 rootProject.name = "ktgrants"

@@ -7,23 +7,23 @@ import kotlin.jvm.JvmInline
 @Serializable
 @JvmInline
 value class Id(val value: String) : Subject.Provider {
-    override fun provide(): Subject = Subject(value)
+    override fun toSubject(): Subject = Subject(value)
 }
 
 @Serializable
 data class Foo(
     val id: Id,
     val name: String
-) : Permissible.Data by Permissible<Foo>(id) {
-    companion object : Permissible.Meta by Permissible<Foo>()
+) : Permissible.Entity by Permissible<Foo>(id) {
+    companion object : Permissible.Type by Permissible<Foo>()
 }
 
 @Serializable
 data class Bar(
     val id: Id,
     val description: String
-) : Permissible.Data by Permissible<Bar>({ id.provide() }) {
-    companion object : Permissible.Meta by Permissible<Bar>()
+) : Permissible.Entity by Permissible<Bar>({ id.toSubject() }) {
+    companion object : Permissible.Type by Permissible<Bar>()
 }
 
 object Grants {

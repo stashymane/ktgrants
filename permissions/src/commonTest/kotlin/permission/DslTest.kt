@@ -3,8 +3,8 @@ package permission
 import Foo
 import Grants
 import Id
-import dev.stashy.ktgrants.permissions.api.any
-import dev.stashy.ktgrants.permissions.api.on
+import dev.stashy.ktgrants.permissions.api.PermissionDsl.Companion.any
+import dev.stashy.ktgrants.permissions.api.PermissionDsl.Companion.on
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 

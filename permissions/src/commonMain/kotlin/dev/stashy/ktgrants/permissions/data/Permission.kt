@@ -68,7 +68,7 @@ public value class Subject(public val value: String) {
     }
 
     public fun interface Provider {
-        public fun provide(): Subject
+        public fun toSubject(): Subject
     }
 }
 

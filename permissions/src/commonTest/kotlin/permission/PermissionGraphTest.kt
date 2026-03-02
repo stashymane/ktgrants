@@ -11,8 +11,8 @@ import Grants.Write
 import Id
 import dev.stashy.ktgrants.kotest.shouldInclude
 import dev.stashy.ktgrants.kotest.shouldNotInclude
-import dev.stashy.ktgrants.permissions.api.any
-import dev.stashy.ktgrants.permissions.api.on
+import dev.stashy.ktgrants.permissions.api.PermissionDsl.Companion.any
+import dev.stashy.ktgrants.permissions.api.PermissionDsl.Companion.on
 import dev.stashy.ktgrants.permissions.data.PermissionModel
 import kotlin.test.Test
 
