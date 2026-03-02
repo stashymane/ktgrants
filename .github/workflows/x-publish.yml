@@ -1,0 +1,40 @@
+name: Publish
+on:
+  workflow_call:
+    inputs:
+      version:
+        description: Version number
+        type: string
+      snapshot:
+        description: Whether this artifact is a snapshot
+        type: boolean
+        default: true
+    secrets:
+      GRADLE_ENCRYPTION_KEY:
+        required: true
+
+jobs:
+  build:
+    name: Build project
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Prepare Java & Gradle
+        uses: ./.github/actions/prepare-gradle
+        with:
+          gradle-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
+          cache-overwrite-existing: 'true'
+
+      - name: Publish project
+        run: ./gradlew publish
+        env:
+          ORG_GRADLE_PROJECT_VERSION_NAME: ${{ inputs.version }}${{ inputs.snapshot && '-SNAPSHOT' || '' }}
+
+#      - name: Upload build reports
+#        uses: actions/upload-artifact@v7
+#        if: always()
+#        with:
+#          name: build-reports
+#          path: '**/build/reports/'
