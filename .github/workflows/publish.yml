@@ -31,7 +31,7 @@ jobs:
     uses: ./.github/workflows/x-publish.yml
     secrets: inherit
     with:
-      snapshot: 'true'
+      snapshot: true
       version: ${{ needs.prepare.outputs.version-date }}
 
   release:
@@ -41,5 +41,5 @@ jobs:
     uses: ./.github/workflows/x-publish.yml
     secrets: inherit
     with:
-      snapshot: 'false'
+      snapshot: false
       version: ${{ needs.prepare.outputs.release-version }}
