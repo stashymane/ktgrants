@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.mavenPublish)
 }
 
 kotlin {
@@ -18,7 +19,7 @@ kotlin {
 
 dependencies {
     implementation(projects.permissions)
-    
+
     implementation(libs.ksp.api)
     implementation(libs.kotlinpoet.core)
     implementation(libs.kotlinpoet.ksp)
