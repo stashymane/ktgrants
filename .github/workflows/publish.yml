@@ -7,7 +7,6 @@ on:
 jobs:
   release:
     name: Publish release
-    needs: prepare
     uses: ./.github/workflows/x-publish.yml
     secrets: inherit
     with:

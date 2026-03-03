@@ -20,7 +20,7 @@ jobs:
       contents: write
 
   publish:
-    name: Publish SNAPSHOT version
+    name: Publish snapshot
     needs: build
     uses: ./.github/workflows/x-publish.yml
     secrets: inherit

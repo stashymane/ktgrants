@@ -40,7 +40,7 @@ jobs:
           VERSION_NAME="$(date -u '+%Y%m%d')-SNAPSHOT"
           echo "version-name=$VERSION_NAME" >> $GITHUB_OUTPUT
   publish:
-    name: Build & publish project
+    name: Publish ${{ needs.prepare.outputs.version-name }}
     needs: prepare
     runs-on: ubuntu-latest
     steps:
