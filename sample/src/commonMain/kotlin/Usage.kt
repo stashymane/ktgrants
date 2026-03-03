@@ -1,9 +1,14 @@
 import dev.stashy.ktgrants.permissions.Permission
 import dev.stashy.ktgrants.permissions.Subject
+import dev.stashy.ktgrants.permissions.api.Actor
 import dev.stashy.ktgrants.permissions.api.Permissible
 import generated.PermissionContext.on
+import generated.hasPermission
 import generated.permission
 import model.*
+
+// some example data
+object System : Permissible.Type by Permissible<System>()
 
 val user = User(
     id = Id("user-1"),
@@ -12,24 +17,28 @@ val user = User(
     )
 )
 
-fun dslService() {
-    val foo = Foo(id = Id("foo"), content = "bar")
-    val permission = permission { Read on foo }
-    if (user.includes(permission)) {
+// actual usage
+fun generatedDslService() {
+    val foo = Foo(id = Id("bar"), content = "baz")
+    val userContext = UserContext(user)
+
+    if (userContext.hasPermission { Read on foo }) {
         // do things
     } else {
-        throw IllegalArgumentException("User ${user.id} does not have permission ${permission.asString()}")
+        throw IllegalArgumentException("User ${user.id} does not have permission to read ${foo.id}")
     }
 }
 
-object System : Permissible.Type by Permissible<System>()
-
 fun simpleService() {
     val systemId = "dev1"
-    val userPermissions = AppModel.process(setOf(Grants.Role.Admin on System.withSubject(systemId)))
+    val actor = Actor.create(
+        AppModel,
+        Id("actor"),
+        setOf(Grants.Role.Admin on System.withSubject(systemId))
+    )
     val permission = Permission(System.group, Subject(systemId), Grants.Write)
 
-    if (userPermissions.includes(permission)) {
+    if (actor.hasPermission(permission)) {
         // write
     } else {
         throw IllegalArgumentException("Permission ${permission.asString()} missing")

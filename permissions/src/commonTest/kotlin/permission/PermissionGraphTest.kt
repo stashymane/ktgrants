@@ -12,8 +12,8 @@ import Id
 import dev.stashy.ktgrants.kotest.shouldInclude
 import dev.stashy.ktgrants.kotest.shouldNotInclude
 import dev.stashy.ktgrants.permissions.PermissionModel
-import dev.stashy.ktgrants.permissions.api.PermissionDsl.Companion.any
-import dev.stashy.ktgrants.permissions.api.PermissionDsl.Companion.on
+import dev.stashy.ktgrants.permissions.api.dsl.GrantDsl.Companion.any
+import dev.stashy.ktgrants.permissions.api.dsl.GrantDsl.Companion.on
 import kotlin.test.Test
 
 class PermissionGraphTest {

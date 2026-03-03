@@ -42,42 +42,56 @@ public data class Permission(
 
 @Serializable
 @JvmInline
-public value class Group(public val value: String) {
+public value class Group(public val value: String) : GroupProvider {
     public constructor(type: KClass<*>) : this(type.simpleName!!.pascalToKebab())
-
-    public companion object {
-        public val Any: Group = Group("*")
-    }
 
     init {
         verifyValue(value) { "Group contains invalid characters." }
     }
+
+    override fun toGroup(): Group = this
+
+    public companion object {
+        public val Any: Group = Group("*")
+    }
+}
+
+public fun interface GroupProvider {
+    public fun toGroup(): Group
 }
 
 @Serializable
 @JvmInline
-public value class Subject(public val value: String) {
-    public companion object {
-        public val Any: Subject = Subject("*")
-    }
-
+public value class Subject(public val value: String) : SubjectProvider {
     init {
         verifyValue(value) { "Subject contains invalid characters." }
     }
 
-    public fun interface Provider {
-        public fun toSubject(): Subject
+    override fun toSubject(): Subject = this
+
+    public companion object {
+        public val Any: Subject = Subject("*")
     }
+}
+
+public fun interface SubjectProvider {
+    public fun toSubject(): Subject
 }
 
 @Serializable
 @JvmInline
-public value class Grant(public val value: String) {
-    public companion object {
-        public val Any: Grant = Grant("*")
-    }
-
+public value class Grant(public val value: String) : GrantProvider {
     init {
         verifyValue(value) { "Grant contains invalid characters." }
     }
+
+    override fun toGrant(): Grant = this
+
+    public companion object {
+        public val Any: Grant = Grant("*")
+    }
+}
+
+public fun interface GrantProvider {
+    public fun toGrant(): Grant
 }

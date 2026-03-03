@@ -1,12 +1,13 @@
 import dev.stashy.ktgrants.permissions.Grant
 import dev.stashy.ktgrants.permissions.Subject
+import dev.stashy.ktgrants.permissions.SubjectProvider
 import dev.stashy.ktgrants.permissions.api.Permissible
 import kotlinx.serialization.Serializable
 import kotlin.jvm.JvmInline
 
 @Serializable
 @JvmInline
-value class Id(val value: String) : Subject.Provider {
+value class Id(val value: String) : SubjectProvider {
     override fun toSubject(): Subject = Subject(value)
 }
 

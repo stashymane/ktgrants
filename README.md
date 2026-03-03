@@ -9,7 +9,7 @@
 > [!WARNING]
 > Currently only available as a snapshot. Check the snapshot instructions below.
 
-## Usage
+## Setup
 
 > [!NOTE]
 > For a full example, check out the sample submodule.
@@ -46,7 +46,7 @@ repositories {
 
 </details>
 
-## KSP module (multiplatform)
+## KSP module
 
 ```kotlin
 kotlin.sourceSets.commonMain {
@@ -69,4 +69,23 @@ tasks {
     }
 }
 
+```
+
+## Example
+
+Based on the source available in the `sample` module.
+
+```kotlin
+val foo = Foo(id = Id("bar"), content = "baz")
+val user = User(
+    id = Id("user-1"),
+    permissions = setOf(permission { Read any Foo })
+)
+val userContext = UserContext(user)
+
+if (userContext.hasPermission { Read on foo }) { // checks if user has "foo:bar:read"
+    // do things - succeeds since `user` has `Read any Foo` permission (translates to "foo:*:read")
+} else {
+    throw IllegalArgumentException("User ${user.id} does not have permission to read ${foo.id}")
+}
 ```
