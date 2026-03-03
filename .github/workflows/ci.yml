@@ -18,3 +18,11 @@ jobs:
     secrets: inherit
     permissions:
       contents: write
+
+  publish:
+    name: Publish SNAPSHOT version
+    needs: build
+    uses: ./.github/workflows/x-publish.yml
+    secrets: inherit
+    with:
+      snapshot: 'true'
