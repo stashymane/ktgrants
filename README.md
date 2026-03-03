@@ -1,11 +1,15 @@
 # ktgrants
 
-(soon to be) ergonomic permission/grant library
+![Maven Central Version](https://img.shields.io/maven-central/v/dev.stashy.ktgrants/permissions?logo=apachemaven&label=central)
+![Maven Snapshot](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Fdev%2Fstashy%2Fktgrants%2Fpermissions%2Fmaven-metadata.xml&strategy=latestProperty&label=snapshot)
 
-## Usage
+---
+(soon to be) ergonomic permission/grant library
 
 > [!WARNING]
 > Currently only available as a snapshot. Check the snapshot instructions below.
+
+## Usage
 
 > [!NOTE]
 > For a full example, check out the sample submodule.
