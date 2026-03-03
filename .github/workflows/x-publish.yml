@@ -12,6 +12,14 @@ on:
     secrets:
       GRADLE_ENCRYPTION_KEY:
         required: true
+      MAVEN_CENTRAL_USERNAME:
+        required: true
+      MAVEN_CENTRAL_PASSWORD:
+        required: true
+      SIGNING_KEY:
+        required: true
+      SIGNING_KEY_PASSWORD:
+        required: true
 
 jobs:
   build:
@@ -27,10 +35,16 @@ jobs:
           gradle-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
           cache-overwrite-existing: 'true'
 
-      - name: Publish project
-        run: ./gradlew publish
+      - name: Publish to Maven Central
+        run: ./gradlew publishToMavenCentral
         env:
           ORG_GRADLE_PROJECT_VERSION_NAME: ${{ inputs.version }}${{ inputs.snapshot && '-SNAPSHOT' || '' }}
+          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_KEY }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
+
 
 #      - name: Upload build reports
 #        uses: actions/upload-artifact@v7
