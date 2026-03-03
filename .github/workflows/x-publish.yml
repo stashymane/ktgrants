@@ -39,6 +39,10 @@ jobs:
         run: ./gradlew publishToMavenCentral
         env:
           ORG_GRADLE_PROJECT_VERSION_NAME: ${{ inputs.version }}${{ inputs.snapshot && '-SNAPSHOT' || '' }}
+
+          ORG_GRADLE_PROJECT_mavenCentralPublishing: 'true'
+          ORG_GRADLE_PROJECT_signAllPublications: 'true'
+
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
 
