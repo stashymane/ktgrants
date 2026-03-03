@@ -25,4 +25,4 @@ jobs:
     uses: ./.github/workflows/x-publish.yml
     secrets: inherit
     with:
-      snapshot: 'true'
+      snapshot: true
