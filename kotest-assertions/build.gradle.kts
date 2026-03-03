@@ -7,8 +7,14 @@ kotlin {
     explicitApi()
 
     jvm()
+    
+    js {
+        nodejs()
+    }
     @Suppress("OPT_IN_USAGE")
-    wasmJs()
+    wasmJs {
+        nodejs()
+    }
 
     sourceSets {
         commonMain.dependencies {
