@@ -8,13 +8,5 @@ public interface PermissionConfig : GrantModel {
     public val resolver: PermissionResolver
 
     public fun actor(subject: SubjectProvider, permissions: Set<Permission>): Actor =
-        ActorDelegate(resolver, subject, permissions)
+        Actor.create(resolver, subject, permissions)
 }
-
-private class ActorDelegate(
-    model: PermissionResolver,
-    subject: SubjectProvider,
-    permissions: Set<Permission>
-) : Actor,
-    PermissionOwner by PermissionOwner.create(model, permissions),
-    SubjectProvider by subject

@@ -16,7 +16,7 @@ val user = User(
     )
 )
 
-// actual usage
+// KSP-generated usage
 fun generatedDslService() {
     val foo = Foo(id = Id("bar"), content = "baz")
     val userContext = UserContext(user)
@@ -28,6 +28,7 @@ fun generatedDslService() {
     }
 }
 
+// without KSP
 fun simpleService() {
     val systemId = "dev1"
     val actor = Permissions.actor(

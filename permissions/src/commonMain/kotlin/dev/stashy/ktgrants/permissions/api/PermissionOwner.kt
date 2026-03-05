@@ -10,8 +10,8 @@ public interface PermissionOwner {
     public fun hasPermission(permission: Permission): Boolean = permissions.includes(permission)
 
     public companion object {
-        public fun create(model: PermissionResolver, permissions: Set<Permission>): PermissionOwner =
-            PermissionOwnerDelegate(model.process(permissions))
+        public fun create(resolver: PermissionResolver, permissions: Set<Permission>): PermissionOwner =
+            PermissionOwnerDelegate(resolver.process(permissions))
     }
 }
 
