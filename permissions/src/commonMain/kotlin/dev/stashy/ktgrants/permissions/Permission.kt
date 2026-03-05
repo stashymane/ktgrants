@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 import kotlin.jvm.JvmInline
 import kotlin.reflect.KClass
 
-@Serializable
+@Serializable(with = PermissionSerializer::class)
 public data class Permission(
     val group: Group,
     val subject: Subject,
@@ -20,7 +20,7 @@ public data class Permission(
          * @see asString
          */
         public fun parse(string: String): Permission {
-            val components = string.split(DELIMITER)
+            val components = string.split(DELIMITER, limit = 3)
             require(components.size == 3) { "Permission \"$string\" must have 3 components, provided ${components.size}" }
 
             val group = Group(components[0])

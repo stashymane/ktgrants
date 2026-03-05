@@ -29,6 +29,8 @@ kotlin {
             implementation(projects.kotestAssertions)
             implementation(libs.kotest.assertions)
             implementation(libs.kotlin.test)
+
+            implementation(libs.kotlinx.serialization.json)
         }
 
         all {
