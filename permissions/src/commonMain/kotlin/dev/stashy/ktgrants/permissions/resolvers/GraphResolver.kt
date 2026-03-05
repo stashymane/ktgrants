@@ -1,11 +1,11 @@
-package dev.stashy.ktgrants.permissions.model
+package dev.stashy.ktgrants.permissions.resolvers
 
 import dev.stashy.ktgrants.annotations.KtgrantDsl
 import dev.stashy.ktgrants.permissions.*
 
-internal class GraphModel(
+internal class GraphResolver(
     private val grantMap: Map<Grant, Set<Grant>> = mapOf()
-) : PermissionModel {
+) : PermissionResolver {
     override fun process(permissions: Sequence<Permission>): PermissionCollection = PermissionSet(
         permissions.fold(sequenceOf()) { sequence, permission ->
             val grants = grantMap[permission.grant]
@@ -27,7 +27,7 @@ public class GraphConfig internal constructor() {
         grantGraph[key] = values
     }
 
-    internal fun build(): PermissionModel = GraphModel(flatten(grantGraph))
+    internal fun build(): PermissionResolver = GraphResolver(flatten(grantGraph))
 }
 
 private fun flatten(graph: Map<Grant, Set<Grant>>): Map<Grant, Set<Grant>> {

@@ -1,6 +1,5 @@
 import dev.stashy.ktgrants.permissions.Permission
 import dev.stashy.ktgrants.permissions.Subject
-import dev.stashy.ktgrants.permissions.api.Actor
 import dev.stashy.ktgrants.permissions.api.Permissible
 import generated.PermissionContext.on
 import generated.hasPermission
@@ -31,12 +30,11 @@ fun generatedDslService() {
 
 fun simpleService() {
     val systemId = "dev1"
-    val actor = Actor.create(
-        AppModel,
+    val actor = Permissions.actor(
         Id("actor"),
-        setOf(Grants.Role.Admin on System.withSubject(systemId))
+        setOf(Permissions.Role.Admin on System.withSubject(systemId))
     )
-    val permission = Permission(System.group, Subject(systemId), Grants.Write)
+    val permission = Permission(System.group, Subject(systemId), Permissions.Write)
 
     if (actor.hasPermission(permission)) {
         // write

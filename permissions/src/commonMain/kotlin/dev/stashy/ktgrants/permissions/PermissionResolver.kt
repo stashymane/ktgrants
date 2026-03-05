@@ -1,20 +1,20 @@
 package dev.stashy.ktgrants.permissions
 
 import dev.stashy.ktgrants.annotations.KtgrantDsl
-import dev.stashy.ktgrants.permissions.model.*
+import dev.stashy.ktgrants.permissions.resolvers.*
 
-public interface PermissionModel {
+public interface PermissionResolver {
     public fun process(permissions: Sequence<Permission>): PermissionCollection
     public fun process(permissions: Set<Permission>): PermissionCollection = process(permissions.asSequence())
 
     public companion object {
-        public fun build(builder: PermissionModelBuilder.() -> Unit): PermissionModel =
-            PermissionModelBuilder().apply(builder).build()
+        public fun build(builder: PermissionResolverBuilder.() -> Unit): PermissionResolver =
+            PermissionResolverBuilder().apply(builder).build()
     }
 }
 
 @KtgrantDsl
-public class PermissionModelBuilder internal constructor() {
+public class PermissionResolverBuilder internal constructor() {
     public var defaults: Set<Permission> = emptySet()
 
     private var graphConfig: GraphConfig? = null
@@ -29,14 +29,14 @@ public class PermissionModelBuilder internal constructor() {
         wildcardConfig = WildcardConfig().apply(config)
     }
 
-    internal fun build(): PermissionModel {
-        var model = graphConfig?.build() ?: ExplicitModel()
+    internal fun build(): PermissionResolver {
+        var model = graphConfig?.build() ?: ExplicitResolver()
 
         if (defaults.isNotEmpty())
-            model = ModelWithDefaults(defaults, model)
+            model = ResolverWithDefaults(defaults, model)
 
         wildcardConfig?.let { wildcardConfig ->
-            model = ModelWithWildcard(model, wildcardConfig)
+            model = ResolverWithWildcard(model, wildcardConfig)
         }
 
         return model

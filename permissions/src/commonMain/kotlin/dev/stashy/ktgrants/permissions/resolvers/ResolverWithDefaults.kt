@@ -1,13 +1,13 @@
-package dev.stashy.ktgrants.permissions.model
+package dev.stashy.ktgrants.permissions.resolvers
 
 import dev.stashy.ktgrants.permissions.Permission
 import dev.stashy.ktgrants.permissions.PermissionCollection
-import dev.stashy.ktgrants.permissions.PermissionModel
+import dev.stashy.ktgrants.permissions.PermissionResolver
 
-internal class ModelWithDefaults(
+internal class ResolverWithDefaults(
     private val defaults: Set<Permission>,
-    private val wrapped: PermissionModel
-) : PermissionModel by wrapped {
+    private val wrapped: PermissionResolver
+) : PermissionResolver by wrapped {
     override fun process(permissions: Sequence<Permission>): PermissionCollection =
         wrapped.process(defaults.asSequence() + permissions)
 }

@@ -1,14 +1,14 @@
-package dev.stashy.ktgrants.permissions.model
+package dev.stashy.ktgrants.permissions.resolvers
 
 import dev.stashy.ktgrants.annotations.KtgrantDsl
 import dev.stashy.ktgrants.permissions.*
 
 private typealias PermissionMapper = (Permission) -> Permission
 
-internal class ModelWithWildcard(
-    private val wrapped: PermissionModel,
+internal class ResolverWithWildcard(
+    private val wrapped: PermissionResolver,
     config: WildcardConfig = WildcardConfig()
-) : PermissionModel by wrapped {
+) : PermissionResolver by wrapped {
     private val mappers: List<PermissionMapper> = config.build()
 
     override fun process(permissions: Sequence<Permission>): PermissionCollection =

@@ -7,7 +7,7 @@ import com.google.devtools.ksp.processing.SymbolProcessor
 import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.validate
-import dev.stashy.ktgrants.annotations.GrantObject
+import dev.stashy.ktgrants.annotations.PermissionObject
 import dev.stashy.ktgrants.ksp.data.GrantObjectMetadata
 import dev.stashy.ktgrants.ksp.generators.generateGrantAccessors
 import dev.stashy.ktgrants.ksp.generators.generatePermissionContext
@@ -20,7 +20,7 @@ public class Processor(
     private var grantObjectMetadata: GrantObjectMetadata? = null
 
     override fun process(resolver: Resolver): List<KSAnnotated> = context(codeGenerator, config) {
-        val symbols = resolver.getSymbolsWithAnnotation(GrantObject::class.qualifiedName!!)
+        val symbols = resolver.getSymbolsWithAnnotation(PermissionObject::class.qualifiedName!!)
             .filter(KSAnnotated::validate)
             .filterIsInstance<KSClassDeclaration>()
             .toList()
@@ -47,7 +47,7 @@ public class Processor(
 
     override fun finish(): Unit = context(codeGenerator, config) {
         val metadata = grantObjectMetadata ?: return
-        
+
         generatePermissionContext(metadata)
     }
 }

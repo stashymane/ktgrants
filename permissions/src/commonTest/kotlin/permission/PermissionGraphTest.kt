@@ -11,7 +11,7 @@ import Grants.Write
 import Id
 import dev.stashy.ktgrants.kotest.shouldInclude
 import dev.stashy.ktgrants.kotest.shouldNotInclude
-import dev.stashy.ktgrants.permissions.PermissionModel
+import dev.stashy.ktgrants.permissions.PermissionResolver
 import dev.stashy.ktgrants.permissions.api.dsl.GrantDsl.Companion.any
 import dev.stashy.ktgrants.permissions.api.dsl.GrantDsl.Companion.on
 import kotlin.test.Test
@@ -19,7 +19,7 @@ import kotlin.test.Test
 class PermissionGraphTest {
     @Test
     fun `grant expansion`() {
-        val model = PermissionModel.build {
+        val model = PermissionResolver.build {
             graph {
                 FullControl provides setOf(Read, Write, Create, Delete)
             }
@@ -39,7 +39,7 @@ class PermissionGraphTest {
 
     @Test
     fun `subject wildcard`() {
-        val model = PermissionModel.build {
+        val model = PermissionResolver.build {
             wildcard {
                 subject = true
             }

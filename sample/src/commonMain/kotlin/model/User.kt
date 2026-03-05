@@ -2,6 +2,7 @@ package model
 
 import dev.stashy.ktgrants.permissions.Permission
 import dev.stashy.ktgrants.permissions.api.Actor
+import generated.actorOf
 
 // basic user data model/entity
 data class User(
@@ -13,4 +14,4 @@ data class User(
 data class UserContext(
     val user: User,
     val sessionData: String? = null // etc
-) : Actor by Actor.create(AppModel, user.id, user.permissions)
+) : Actor by actorOf(user.id, user.permissions)

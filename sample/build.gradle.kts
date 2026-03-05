@@ -10,14 +10,16 @@ kotlin {
 
     jvm()
     @Suppress("OPT_IN_USAGE")
-    wasmJs()
+    wasmJs {
+        nodejs()
+    }
 
     sourceSets {
         commonMain {
             dependencies {
                 implementation(projects.permissions)
             }
-            
+
             kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
         }
     }
