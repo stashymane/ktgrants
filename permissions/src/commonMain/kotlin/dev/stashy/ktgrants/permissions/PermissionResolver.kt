@@ -29,11 +29,21 @@ public class PermissionResolverBuilder internal constructor() {
         wildcardConfig = WildcardConfig().apply(config)
     }
 
+    private var generator: PermissionGenerator? = null
+    public fun generator(fn: PermissionGenerator) {
+        require(generator == null) { "A custom generator has already been configured" }
+        generator = fn
+    }
+
     internal fun build(): PermissionResolver {
         var model = graphConfig?.build() ?: PermissionSetResolver()
 
         if (defaults.isNotEmpty())
-            model = DefaultResolver(defaults, model)
+            model = DefaultResolver(model, defaults)
+        
+        generator?.let { generator ->
+            model = CustomResolver(model, generator)
+        }
 
         wildcardConfig?.let { wildcardConfig ->
             model = WildcardResolver(model, wildcardConfig)
