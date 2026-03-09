@@ -30,13 +30,13 @@ public class PermissionResolverBuilder internal constructor() {
     }
 
     internal fun build(): PermissionResolver {
-        var model = graphConfig?.build() ?: ExplicitResolver()
+        var model = graphConfig?.build() ?: PermissionSetResolver()
 
         if (defaults.isNotEmpty())
-            model = ResolverWithDefaults(defaults, model)
+            model = DefaultResolver(defaults, model)
 
         wildcardConfig?.let { wildcardConfig ->
-            model = ResolverWithWildcard(model, wildcardConfig)
+            model = WildcardResolver(model, wildcardConfig)
         }
 
         return model

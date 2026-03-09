@@ -5,7 +5,7 @@ import dev.stashy.ktgrants.permissions.*
 
 private typealias PermissionMapper = (Permission) -> Permission
 
-internal class ResolverWithWildcard(
+internal class WildcardResolver(
     private val wrapped: PermissionResolver,
     config: WildcardConfig = WildcardConfig()
 ) : PermissionResolver by wrapped {
