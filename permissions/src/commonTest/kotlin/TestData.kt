@@ -15,7 +15,7 @@ value class Id(val value: String) : SubjectProvider {
 data class Foo(
     val id: Id,
     val name: String
-) : Permissible.Entity by Permissible<Foo>(id) {
+) : Permissible.Entity by Foo.withSubject(id) {
     companion object : Permissible.Type by Permissible<Foo>()
 }
 
@@ -23,11 +23,16 @@ data class Foo(
 data class Bar(
     val id: Id,
     val description: String
-) : Permissible.Entity by Permissible<Bar>({ id.toSubject() }) {
+) : Permissible.Entity by Bar.withSubject(id) {
     companion object : Permissible.Type by Permissible<Bar>()
 }
 
+@Serializable
+object System : Permissible.Type by Permissible<System>()
+
 object Grants : GrantModel {
+    val Access by grant()
+
     val Read by grant()
     val Write by grant()
     val Create by grant()

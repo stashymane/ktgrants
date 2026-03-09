@@ -13,6 +13,27 @@ public interface PermissionResolver {
     }
 }
 
+internal class PipelineResolver(
+    val generators: List<Resolver.Generator>,
+    val checkers: List<Resolver.Checker>
+) : PermissionResolver {
+    override fun process(permissions: Sequence<Permission>): PermissionCollection {
+        val permissionSequence = generators.fold(permissions) { acc, generator ->
+            generator.process(acc)
+        }
+
+        val permissionSet = PermissionSet(permissionSequence)
+
+        val checkedSet = PermissionCollection { permission ->
+            val sequence = checkers.fold(sequenceOf(permission)) { sequence, checker ->
+                checker.expand(sequence)
+            }
+            permissionSet.includesAny(sequence)
+        }
+        return checkedSet
+    }
+}
+
 @KtgrantDsl
 public class PermissionResolverBuilder internal constructor() {
     public var defaults: Set<Permission> = emptySet()
@@ -36,19 +57,24 @@ public class PermissionResolverBuilder internal constructor() {
     }
 
     internal fun build(): PermissionResolver {
-        var model = graphConfig?.build() ?: PermissionSetResolver()
+        val generators = mutableListOf<Resolver.Generator>()
+        val checkers = mutableListOf<Resolver.Checker>()
 
         if (defaults.isNotEmpty())
-            model = DefaultResolver(model, defaults)
-        
+            generators += DefaultGenerator(defaults)
+
         generator?.let { generator ->
-            model = CustomResolver(model, generator)
+            generators += CustomGenerator(generator)
+        }
+
+        graphConfig?.let { graphConfig ->
+            generators += graphConfig.build()
         }
 
         wildcardConfig?.let { wildcardConfig ->
-            model = WildcardResolver(model, wildcardConfig)
+            checkers += WildcardChecker(wildcardConfig)
         }
 
-        return model
+        return PipelineResolver(generators, checkers)
     }
 }

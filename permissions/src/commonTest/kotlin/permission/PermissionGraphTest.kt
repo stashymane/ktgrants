@@ -2,6 +2,8 @@ package permission
 
 import Bar
 import Foo
+import Grants.Access
+import Grants.Admin
 import Grants.Create
 import Grants.Delete
 import Grants.FullControl
@@ -9,9 +11,12 @@ import Grants.Owner
 import Grants.Read
 import Grants.Write
 import Id
+import System
 import dev.stashy.ktgrants.kotest.shouldInclude
 import dev.stashy.ktgrants.kotest.shouldNotInclude
+import dev.stashy.ktgrants.permissions.Permission
 import dev.stashy.ktgrants.permissions.PermissionResolver
+import dev.stashy.ktgrants.permissions.Subject
 import dev.stashy.ktgrants.permissions.api.dsl.GrantDsl.Companion.any
 import dev.stashy.ktgrants.permissions.api.dsl.GrantDsl.Companion.on
 import kotlin.test.Test
@@ -58,5 +63,55 @@ class PermissionGraphTest {
 
         permissions shouldNotInclude (Read on bar)
         permissions shouldNotInclude (Write on foo)
+    }
+
+    @Test
+    fun `resolver order`() {
+        val defaultPermission = Permission(System.group, Subject.Any, Access)
+        val accessFooPermission = Permission(Foo.group, Subject.Any, Access)
+        val readFooPermission = Permission(Foo.group, Subject.Any, Read)
+        val accessSpecificFooPermission = Permission(Foo.group, Subject("identifier"), Access)
+        val readSpecificFooPermission = Permission(Foo.group, Subject("identifier"), Read)
+
+        val model = PermissionResolver.build {
+            defaults = setOf(Permission(System.group, Subject.Any, Access))
+
+            graph {
+                FullControl provides setOf(Access, Read, Write, Create, Delete)
+                Admin provides FullControl
+            }
+
+            wildcard {
+                subject = true
+            }
+
+            generator { permission ->
+                yield(permission)
+
+                if (permission.group == System.group) {
+                    sequenceOf(Foo.group, Bar.group).forEach {
+                        yield(permission.copy(group = it))
+                    }
+                }
+            }
+        }
+
+        val defaultUser = model.process(sequenceOf())
+        val adminUser = model.process(sequenceOf(Permission(System.group, Subject.Any, Admin)))
+
+        defaultUser shouldInclude defaultPermission
+        adminUser shouldInclude defaultPermission
+
+        defaultUser shouldInclude accessFooPermission
+        adminUser shouldInclude accessFooPermission
+
+        defaultUser shouldNotInclude readFooPermission
+        adminUser shouldInclude readFooPermission
+
+        defaultUser shouldInclude accessSpecificFooPermission
+        adminUser shouldInclude accessSpecificFooPermission
+
+        defaultUser shouldNotInclude readSpecificFooPermission
+        adminUser shouldInclude readSpecificFooPermission
     }
 }

@@ -5,6 +5,8 @@ public fun interface PermissionCollection {
      * Returns true if the [permission] is included in this container.
      */
     public infix fun includes(permission: Permission): Boolean
+    public infix fun includesAny(permissions: Sequence<Permission>): Boolean =
+        permissions.any { includes(it) }
 }
 
 internal class PermissionSet
