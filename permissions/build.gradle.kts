@@ -3,22 +3,13 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.dokka)
     alias(libs.plugins.mavenPublish)
+
+    id("multiplatform-convention")
 }
 
 kotlin {
-    jvmToolchain(libs.versions.jvm.get().toInt())
-    explicitApi()
-
-    jvm()
-
-    js {
-        nodejs()
-    }
-    @Suppress("OPT_IN_USAGE")
-    wasmJs {
-        nodejs()
-    }
-
+    configureLibrary(libs.versions.jvm)
+    configureTargets()
 
     sourceSets {
         commonMain.dependencies {
@@ -32,13 +23,5 @@ kotlin {
 
             implementation(libs.kotlinx.serialization.json)
         }
-
-        all {
-            languageSettings.enableLanguageFeature("ContextParameters")
-        }
-    }
-
-    compilerOptions {
-        freeCompilerArgs.add("-Xreturn-value-checker=check")
     }
 }

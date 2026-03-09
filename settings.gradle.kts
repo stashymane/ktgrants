@@ -1,6 +1,15 @@
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 enableFeaturePreview("STABLE_CONFIGURATION_CACHE")
 
+pluginManagement {
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+    }
+
+    includeBuild("build-convention")
+}
+
 dependencyResolutionManagement {
     @Suppress("UnstableApiUsage")
     repositories {
