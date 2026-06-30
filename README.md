@@ -50,16 +50,41 @@ repositories {
 Based on the source available in the `sample` module.
 
 ```kotlin
+object PermissionModel : PermissionConfig {
+    val Read by Grant
+    val Write by Grant
+    val Create by Grant
+    val Delete by Grant
+
+    val Admin by Grant
+    // ...
+
+    override val resolver: PermissionResolver = PermissionResolver.build {
+        graph {
+            Admin provides setOf(Read, Write, Create, Delete)
+        }
+        wildcard {
+            grant = true // enables matching grants against wildcard, e.g. `foo:subject:*` matching any grant
+        }
+    }
+}
+
 context(PermissionModel) {
+    // entity we want to authorize for
     val foo = Foo(id = Id("bar"), content = "baz")
+
+    // user model that only stores data
     val user = User(
-        id = Id("user-1"),
-        permissions = setOf(permission { Read any Foo })
+        id = Id("user-1"), // `Id` implements `SubjectProvider`
+        permissions = setOf(permission { Read any Foo }) // gives user "foo:*:read" permission
     )
+
+    // user context expands permission entries
+    // can also use `lazy` to expand entries on-demand, but explicit expansion is preferred
     val userContext = UserContext(user)
 
     if (userContext.hasPermission { Read on foo }) { // checks if user has "foo:bar:read"
-        // do things - succeeds since `user` has `Read any Foo` permission (translates to "foo:*:read")
+        // do things - succeeds since `user` has `foo:*:read` permission
     } else {
         throw IllegalArgumentException("User ${user.id} does not have permission to read ${foo.id}")
     }
