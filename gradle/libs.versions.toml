@@ -1,5 +1,7 @@
 [versions]
 jvm = "25"
+jvm-target = "11"
+
 kotlin = "2.4.0"
 kotlinx-serialization = "1.10.0"
 dokka = "2.1.0"

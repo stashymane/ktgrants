@@ -3,8 +3,6 @@ plugins {
 }
 
 kotlin {
-    jvmToolchain(libs.versions.jvm.get().toInt())
-
     jvm()
     @Suppress("OPT_IN_USAGE")
     wasmJs {
