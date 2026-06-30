@@ -67,14 +67,14 @@ class PermissionGraphTest {
 
     @Test
     fun `resolver order`() {
-        val defaultPermission = Permission(System.group, Subject.Any, Access)
-        val accessFooPermission = Permission(Foo.group, Subject.Any, Access)
-        val readFooPermission = Permission(Foo.group, Subject.Any, Read)
-        val accessSpecificFooPermission = Permission(Foo.group, Subject("identifier"), Access)
-        val readSpecificFooPermission = Permission(Foo.group, Subject("identifier"), Read)
+        val defaultPermission = Permission(System.scope, Subject.Any, Access)
+        val accessFooPermission = Permission(Foo.scope, Subject.Any, Access)
+        val readFooPermission = Permission(Foo.scope, Subject.Any, Read)
+        val accessSpecificFooPermission = Permission(Foo.scope, Subject("identifier"), Access)
+        val readSpecificFooPermission = Permission(Foo.scope, Subject("identifier"), Read)
 
         val model = PermissionResolver.build {
-            defaults = setOf(Permission(System.group, Subject.Any, Access))
+            defaults = setOf(Permission(System.scope, Subject.Any, Access))
 
             graph {
                 FullControl provides setOf(Access, Read, Write, Create, Delete)
@@ -88,16 +88,16 @@ class PermissionGraphTest {
             generator { permission ->
                 yield(permission)
 
-                if (permission.group == System.group) {
-                    sequenceOf(Foo.group, Bar.group).forEach {
-                        yield(permission.copy(group = it))
+                if (permission.scope == System.scope) {
+                    sequenceOf(Foo.scope, Bar.scope).forEach {
+                        yield(permission.copy(scope = it))
                     }
                 }
             }
         }
 
         val defaultUser = model.process(sequenceOf())
-        val adminUser = model.process(sequenceOf(Permission(System.group, Subject.Any, Admin)))
+        val adminUser = model.process(sequenceOf(Permission(System.scope, Subject.Any, Admin)))
 
         defaultUser shouldInclude defaultPermission
         adminUser shouldInclude defaultPermission

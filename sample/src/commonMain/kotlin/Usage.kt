@@ -35,7 +35,7 @@ fun simpleService() {
         Id("actor"),
         setOf(Permissions.Role.Admin on System.withSubject(systemId))
     )
-    val permission = Permission(System.group, Subject(systemId), Permissions.Write)
+    val permission = Permission(System.scope, Subject(systemId), Permissions.Write)
 
     if (actor.hasPermission(permission)) {
         // write

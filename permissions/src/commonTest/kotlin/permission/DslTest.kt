@@ -13,7 +13,7 @@ class DslTest {
     fun `dsl on object type`() {
         val perm = Grants.Read any Foo
 
-        Foo.group shouldBe perm.group
+        Foo.scope shouldBe perm.scope
         Grants.Read shouldBe perm.grant
     }
 
@@ -22,7 +22,7 @@ class DslTest {
         val foo = Foo(Id("hello"), "bar")
         val perm = Grants.Read on foo
 
-        foo.group shouldBe perm.group
+        foo.scope shouldBe perm.scope
         foo.subject shouldBe perm.subject
         Grants.Read shouldBe perm.grant
     }

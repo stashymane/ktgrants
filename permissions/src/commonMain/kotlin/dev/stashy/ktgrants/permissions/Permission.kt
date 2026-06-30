@@ -7,7 +7,7 @@ import kotlin.reflect.KClass
 
 @Serializable(with = PermissionSerializer::class)
 public data class Permission(
-    val group: Group,
+    val scope: Scope,
     val subject: Subject,
     val grant: Grant
 ) {
@@ -16,18 +16,18 @@ public data class Permission(
 
         /**
          * Parses a string representation of a permission.
-         * Must be formatted as `group:subject:grant`.
+         * Must be formatted as `scope:subject:grant`.
          * @see asString
          */
         public fun parse(string: String): Permission {
             val components = string.split(DELIMITER, limit = 3)
             require(components.size == 3) { "Permission \"$string\" must have 3 components, provided ${components.size}" }
 
-            val group = Group(components[0])
+            val scope = Scope(components[0])
             val subject = Subject(components[1])
             val grant = Grant(components[2])
 
-            return Permission(group, subject, grant)
+            return Permission(scope, subject, grant)
         }
     }
 
@@ -35,29 +35,29 @@ public data class Permission(
      * Returns a formatted string representation of this permission.
      * This representation is valid to use in [parse].
      */
-    public fun asString(): String = "${group.value}$DELIMITER${subject.value}$DELIMITER${grant.value}"
+    public fun asString(): String = "${scope.value}$DELIMITER${subject.value}$DELIMITER${grant.value}"
 
     override fun toString(): String = "Permission(${asString()})"
 }
 
 @Serializable
 @JvmInline
-public value class Group(public val value: String) : GroupProvider {
+public value class Scope(public val value: String) : ScopeProvider {
     public constructor(type: KClass<*>) : this(type.simpleName!!.pascalToKebab())
 
     init {
-        verifyValue(value) { "Group contains invalid characters." }
+        verifyValue(value) { "Scope contains invalid characters." }
     }
 
-    override fun toGroup(): Group = this
+    override fun toScope(): Scope = this
 
     public companion object {
-        public val Any: Group = Group("*")
+        public val Any: Scope = Scope("*")
     }
 }
 
-public fun interface GroupProvider {
-    public fun toGroup(): Group
+public fun interface ScopeProvider {
+    public fun toScope(): Scope
 }
 
 @Serializable
