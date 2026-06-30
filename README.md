@@ -22,7 +22,6 @@ ktgrants = "version"
 
 [libs]
 ktgrants-permissions = { module = "dev.stashy.ktgrants:permissions", version.ref = "ktgrants" }
-ktgrants-ksp = { module = "dev.stashy.ktgrants:ksp", version.ref = "ktgrants" }
 ```
 
 <details>
@@ -46,46 +45,23 @@ repositories {
 
 </details>
 
-## KSP module
-
-```kotlin
-kotlin.sourceSets.commonMain {
-    kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
-}
-
-dependencies {
-    add("kspCommonMainMetadata", libs.ktgrants.ksp)
-}
-
-ksp {
-    arg("ktgrants.package", "generated")
-}
-
-tasks {
-    withType<KotlinCompilationTask<*>>().configureEach {
-        if (name != "kspCommonMainKotlinMetadata") {
-            dependsOn("kspCommonMainKotlinMetadata")
-        }
-    }
-}
-
-```
-
 ## Example
 
 Based on the source available in the `sample` module.
 
 ```kotlin
-val foo = Foo(id = Id("bar"), content = "baz")
-val user = User(
-    id = Id("user-1"),
-    permissions = setOf(permission { Read any Foo })
-)
-val userContext = UserContext(user)
+context(PermissionModel) {
+    val foo = Foo(id = Id("bar"), content = "baz")
+    val user = User(
+        id = Id("user-1"),
+        permissions = setOf(permission { Read any Foo })
+    )
+    val userContext = UserContext(user)
 
-if (userContext.hasPermission { Read on foo }) { // checks if user has "foo:bar:read"
-    // do things - succeeds since `user` has `Read any Foo` permission (translates to "foo:*:read")
-} else {
-    throw IllegalArgumentException("User ${user.id} does not have permission to read ${foo.id}")
+    if (userContext.hasPermission { Read on foo }) { // checks if user has "foo:bar:read"
+        // do things - succeeds since `user` has `Read any Foo` permission (translates to "foo:*:read")
+    } else {
+        throw IllegalArgumentException("User ${user.id} does not have permission to read ${foo.id}")
+    }
 }
 ```

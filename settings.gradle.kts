@@ -24,7 +24,6 @@ plugins {
 include(
     "permissions",
     "kotest-assertions",
-    "ksp",
     "sample"
 )
 
