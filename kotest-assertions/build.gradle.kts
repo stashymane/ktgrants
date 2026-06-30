@@ -1,13 +1,12 @@
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
 
-    id("multiplatform-convention")
+    id("multiplatform.target.jvm")
+    id("multiplatform.target.wasmJs")
+    id("multiplatform.target.js")
 }
 
 kotlin {
-    configureLibrary(libs.versions.jvm)
-    configureTargets()
-
     sourceSets {
         commonMain.dependencies {
             implementation(libs.kotest.assertions)

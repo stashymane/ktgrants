@@ -7,7 +7,7 @@ pluginManagement {
         gradlePluginPortal()
     }
 
-    includeBuild("build-convention")
+    includeBuild("conventions")
 }
 
 dependencyResolutionManagement {
