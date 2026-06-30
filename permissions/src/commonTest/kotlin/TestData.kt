@@ -1,6 +1,6 @@
+import dev.stashy.ktgrants.permissions.Grant
 import dev.stashy.ktgrants.permissions.Subject
 import dev.stashy.ktgrants.permissions.SubjectProvider
-import dev.stashy.ktgrants.permissions.api.GrantModel
 import dev.stashy.ktgrants.permissions.api.Permissible
 import kotlinx.serialization.Serializable
 import kotlin.jvm.JvmInline
@@ -30,15 +30,15 @@ data class Bar(
 @Serializable
 object System : Permissible.Type by Permissible<System>()
 
-object Grants : GrantModel {
-    val Access by grant()
+object Grants {
+    val Access by Grant
+    
+    val Read by Grant
+    val Write by Grant
+    val Create by Grant
+    val Delete by Grant
 
-    val Read by grant()
-    val Write by grant()
-    val Create by grant()
-    val Delete by grant()
-
-    val FullControl by grant()
-    val Admin by grant()
-    val Owner by grant()
+    val FullControl by Grant
+    val Admin by Grant
+    val Owner by Grant
 }

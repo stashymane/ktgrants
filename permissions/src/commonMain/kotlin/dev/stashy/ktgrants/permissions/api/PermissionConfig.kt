@@ -6,7 +6,7 @@ import dev.stashy.ktgrants.permissions.SubjectProvider
 import dev.stashy.ktgrants.permissions.api.dsl.GrantDsl
 import kotlin.jvm.JvmName
 
-public interface PermissionConfig : GrantModel, GrantDsl {
+public interface PermissionConfig : GrantDsl {
     public val resolver: PermissionResolver
 
     public fun actor(subject: SubjectProvider, permissions: Set<Permission>): Actor =

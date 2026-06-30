@@ -1,18 +1,19 @@
 package model
 
+import dev.stashy.ktgrants.permissions.Grant
 import dev.stashy.ktgrants.permissions.PermissionResolver
 import dev.stashy.ktgrants.permissions.api.PermissionConfig
 
 // the permission model that will handle permission resolution
 object PermissionModel : PermissionConfig {
-    val Read by grant()
-    val Write by grant()
-    val Create by grant()
-    val Delete by grant()
+    val Read by Grant
+    val Write by Grant
+    val Create by Grant
+    val Delete by Grant
 
     object Role {
-        val Admin by grant()
-        val Owner by grant()
+        val Admin by Grant
+        val Owner by Grant
     }
 
     override val resolver: PermissionResolver = PermissionResolver.build {
