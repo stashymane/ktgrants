@@ -7,6 +7,11 @@ import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
+/**
+ * Serializer for the [Permission] type.
+ * 
+ * Permissions are represented as a string in the format of `scope:subject:grant`
+ */
 public object PermissionSerializer : KSerializer<Permission> {
     override val descriptor: SerialDescriptor =
         PrimitiveSerialDescriptor("dev.stashy.ktgrants.permissions.Permission", PrimitiveKind.STRING)

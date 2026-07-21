@@ -7,6 +7,13 @@ import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty
 
+/**
+ * A permission record.
+ *
+ * @param scope The scope, or namespace, of the permission.
+ * @param subject What subject this permission is valid for.
+ * @param grant What capability this permission grants.
+ */
 @Serializable(with = PermissionSerializer::class)
 public data class Permission(
     val scope: Scope,
@@ -42,6 +49,9 @@ public data class Permission(
     override fun toString(): String = "Permission(${asString()})"
 }
 
+/**
+ * The scope, or namespace, of a permission.
+ */
 @Serializable
 @JvmInline
 public value class Scope(public val value: String) : ScopeProvider {
@@ -62,6 +72,9 @@ public fun interface ScopeProvider {
     public fun toScope(): Scope
 }
 
+/**
+ * The subject of a permission.
+ */
 @Serializable
 @JvmInline
 public value class Subject(public val value: String) : SubjectProvider {
@@ -80,6 +93,9 @@ public fun interface SubjectProvider {
     public fun toSubject(): Subject
 }
 
+/**
+ * A capability that is granted by a permission.
+ */
 @Serializable
 @JvmInline
 public value class Grant(public val value: String) : GrantProvider {
