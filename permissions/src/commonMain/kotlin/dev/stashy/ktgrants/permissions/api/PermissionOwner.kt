@@ -16,3 +16,7 @@ public interface PermissionOwner {
 }
 
 private class PermissionOwnerDelegate(override val permissions: PermissionCollection) : PermissionOwner
+
+context(config: T)
+public inline fun <T : PermissionConfig> PermissionOwner.hasPermission(builder: T.() -> Permission): Boolean =
+    this.hasPermission(builder(config))
