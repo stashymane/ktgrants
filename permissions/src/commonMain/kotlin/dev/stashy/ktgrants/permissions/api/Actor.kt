@@ -18,3 +18,7 @@ internal class ActorDelegate(
 ) : Actor,
     PermissionOwner by PermissionOwner.create(resolver, permissions),
     SubjectProvider by subject
+
+context(config: T)
+public inline fun <T : PermissionConfig> Actor.hasPermission(builder: T.() -> Permission): Boolean =
+    this.hasPermission(builder(config))

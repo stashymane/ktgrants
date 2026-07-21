@@ -16,23 +16,23 @@ data class Foo(
     val id: Id,
     val name: String
 ) : Permissible.Entity by Foo.withSubject(id) {
-    companion object : Permissible.Type by Permissible<Foo>()
+    companion object : Permissible.Type by Permissible.Type<Foo>()
 }
 
 @Serializable
 data class Bar(
     val id: Id,
     val description: String
-) : Permissible.Entity by Bar.withSubject(id) {
-    companion object : Permissible.Type by Permissible<Bar>()
+) : Permissible.Entity by Permissible.Entity(Foo, id) {
+    companion object : Permissible.Type by Permissible.Type<Bar>()
 }
 
 @Serializable
-object System : Permissible.Type by Permissible<System>()
+object System : Permissible.Type by Permissible.Type<System>()
 
 object Grants {
     val Access by Grant
-    
+
     val Read by Grant
     val Write by Grant
     val Create by Grant

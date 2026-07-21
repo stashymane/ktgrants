@@ -59,7 +59,7 @@ object PermissionModel : PermissionConfig {
     val Admin by Grant
     // ...
 
-    override val resolver: PermissionResolver = PermissionResolver.build {
+    override val resolver: PermissionResolver = resolverOf {
         graph {
             Admin provides setOf(Read, Write, Create, Delete)
         }

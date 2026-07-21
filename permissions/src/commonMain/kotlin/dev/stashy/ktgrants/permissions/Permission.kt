@@ -1,6 +1,5 @@
 package dev.stashy.ktgrants.permissions
 
-import dev.stashy.ktgrants.permissions.Permission.Companion.parse
 import kotlinx.serialization.Serializable
 import kotlin.jvm.JvmInline
 import kotlin.properties.PropertyDelegateProvider

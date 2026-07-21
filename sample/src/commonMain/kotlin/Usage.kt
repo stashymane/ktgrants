@@ -1,13 +1,13 @@
 import dev.stashy.ktgrants.permissions.Permission
 import dev.stashy.ktgrants.permissions.Subject
 import dev.stashy.ktgrants.permissions.api.Permissible
-import dev.stashy.ktgrants.permissions.api.dsl.GrantDsl.Companion.on
 import dev.stashy.ktgrants.permissions.api.hasPermission
 import dev.stashy.ktgrants.permissions.api.permission
 import model.*
+import model.PermissionModel.on
 
 // some example data
-object System : Permissible.Type by Permissible<System>()
+object System : Permissible.Type by Permissible.Type<System>()
 
 val user = User(
     id = Id("user-1"),
@@ -30,12 +30,12 @@ fun contextService() = context(PermissionModel) {
 
 // without context
 fun simpleService() {
-    val systemId = "dev1"
+    val systemId = Subject("dev1")
     val actor = PermissionModel.actor(
         Id("actor"),
         setOf(PermissionModel.Role.Admin on System.withSubject(systemId))
     )
-    val permission = Permission(System.scope, Subject(systemId), PermissionModel.Write)
+    val permission = Permission(System.scope, systemId, PermissionModel.Write)
 
     if (actor.hasPermission(permission)) {
         // write
