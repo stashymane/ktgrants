@@ -1,20 +1,20 @@
 package dev.stashy.ktgrants.permissions.api
 
 import dev.stashy.ktgrants.permissions.Permission
-import dev.stashy.ktgrants.permissions.PermissionResolver
-import dev.stashy.ktgrants.permissions.PermissionResolverBuilder
+import dev.stashy.ktgrants.permissions.PermissionPolicy
+import dev.stashy.ktgrants.permissions.PermissionPolicyBuilder
 import dev.stashy.ktgrants.permissions.SubjectProvider
 import dev.stashy.ktgrants.permissions.api.dsl.GrantDsl
 import kotlin.jvm.JvmName
 
 public interface PermissionConfig : GrantDsl {
-    public val resolver: PermissionResolver
+    public val policy: PermissionPolicy
 
     public fun actor(subject: SubjectProvider, permissions: Set<Permission>): Actor =
-        Actor.create(resolver, subject, permissions)
+        Actor.create(policy, subject, permissions)
 
-    public fun resolverOf(builder: PermissionResolverBuilder.() -> Unit): PermissionResolver =
-        PermissionResolver.build(builder)
+    public fun policyOf(builder: PermissionPolicyBuilder.() -> Unit): PermissionPolicy =
+        PermissionPolicy.build(builder)
 }
 
 @JvmName("permissionBuilderExtension")

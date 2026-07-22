@@ -1,7 +1,7 @@
 package model
 
 import dev.stashy.ktgrants.permissions.Grant
-import dev.stashy.ktgrants.permissions.PermissionResolver
+import dev.stashy.ktgrants.permissions.PermissionPolicy
 import dev.stashy.ktgrants.permissions.api.PermissionConfig
 
 // the permission model that will handle permission resolution
@@ -16,7 +16,7 @@ object PermissionModel : PermissionConfig {
         val Owner by Grant
     }
 
-    override val resolver: PermissionResolver = resolverOf {
+    override val policy: PermissionPolicy = policyOf {
         graph {
             Role.Admin provides setOf(Read, Write, Create, Delete)
         }

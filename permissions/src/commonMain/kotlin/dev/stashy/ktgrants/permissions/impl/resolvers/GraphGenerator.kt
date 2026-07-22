@@ -1,4 +1,4 @@
-package dev.stashy.ktgrants.permissions.resolvers
+package dev.stashy.ktgrants.permissions.impl.resolvers
 
 import dev.stashy.ktgrants.annotations.KtgrantDsl
 import dev.stashy.ktgrants.permissions.Grant

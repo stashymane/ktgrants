@@ -1,5 +1,7 @@
 package dev.stashy.ktgrants.permissions
 
+import dev.stashy.ktgrants.permissions.impl.pascalToKebab
+import dev.stashy.ktgrants.permissions.impl.verifyValue
 import kotlinx.serialization.Serializable
 import kotlin.jvm.JvmInline
 import kotlin.properties.PropertyDelegateProvider

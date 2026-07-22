@@ -1,41 +1,21 @@
 package dev.stashy.ktgrants.permissions
 
 import dev.stashy.ktgrants.annotations.KtgrantDsl
-import dev.stashy.ktgrants.permissions.resolvers.*
+import dev.stashy.ktgrants.permissions.impl.PipelineResolver
+import dev.stashy.ktgrants.permissions.impl.resolvers.*
 
-public interface PermissionResolver {
+public interface PermissionPolicy {
     public fun process(permissions: Sequence<Permission>): PermissionCollection
     public fun process(permissions: Set<Permission>): PermissionCollection = process(permissions.asSequence())
 
     public companion object {
-        public fun build(builder: PermissionResolverBuilder.() -> Unit): PermissionResolver =
-            PermissionResolverBuilder().apply(builder).build()
-    }
-}
-
-internal class PipelineResolver(
-    val generators: List<Resolver.Generator>,
-    val checkers: List<Resolver.Checker>
-) : PermissionResolver {
-    override fun process(permissions: Sequence<Permission>): PermissionCollection {
-        val permissionSequence = generators.fold(permissions) { acc, generator ->
-            generator.process(acc)
-        }
-
-        val permissionSet = PermissionSet(permissionSequence)
-
-        val checkedSet = PermissionCollection { permission ->
-            val sequence = checkers.fold(sequenceOf(permission)) { sequence, checker ->
-                checker.expand(sequence)
-            }
-            permissionSet.includesAny(sequence)
-        }
-        return checkedSet
+        public fun build(builder: PermissionPolicyBuilder.() -> Unit): PermissionPolicy =
+            PermissionPolicyBuilder().apply(builder).build()
     }
 }
 
 @KtgrantDsl
-public class PermissionResolverBuilder internal constructor() {
+public class PermissionPolicyBuilder internal constructor() {
     public var defaults: Set<Permission> = emptySet()
 
     private var graphConfig: GraphConfig? = null
@@ -56,7 +36,7 @@ public class PermissionResolverBuilder internal constructor() {
         generator = fn
     }
 
-    internal fun build(): PermissionResolver {
+    internal fun build(): PermissionPolicy {
         val generators = mutableListOf<Resolver.Generator>()
         val checkers = mutableListOf<Resolver.Checker>()
 

@@ -1,4 +1,4 @@
-package dev.stashy.ktgrants.permissions
+package dev.stashy.ktgrants.permissions.impl
 
 private val uppercaseRegex = Regex("[A-Z]")
 internal fun String.pascalToKebab(): String = uppercaseRegex.replace(this) {

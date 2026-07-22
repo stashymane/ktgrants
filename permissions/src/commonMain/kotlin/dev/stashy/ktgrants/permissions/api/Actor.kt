@@ -1,20 +1,20 @@
 package dev.stashy.ktgrants.permissions.api
 
 import dev.stashy.ktgrants.permissions.Permission
-import dev.stashy.ktgrants.permissions.PermissionResolver
+import dev.stashy.ktgrants.permissions.PermissionPolicy
 import dev.stashy.ktgrants.permissions.SubjectProvider
 
-public interface Actor : SubjectProvider, PermissionOwner {
+public interface Actor : SubjectProvider, PermissionHolder {
     public companion object {
-        public fun create(resolver: PermissionResolver, subject: SubjectProvider, permissions: Set<Permission>): Actor =
-            ActorDelegate(resolver, subject, permissions)
+        public fun create(policy: PermissionPolicy, subject: SubjectProvider, permissions: Set<Permission>): Actor =
+            ActorDelegate(policy, subject, permissions)
     }
 }
 
 internal class ActorDelegate(
-    resolver: PermissionResolver,
+    policy: PermissionPolicy,
     subject: SubjectProvider,
     permissions: Set<Permission>
 ) : Actor,
-    PermissionOwner by PermissionOwner.create(resolver, permissions),
+    PermissionHolder by PermissionHolder.create(policy, permissions),
     SubjectProvider by subject
