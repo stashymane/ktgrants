@@ -23,7 +23,7 @@ data class Foo(
 data class Bar(
     val id: Id,
     val description: String
-) : Permissible.Entity by Permissible.Entity(Foo, id) {
+) : Permissible.Entity by Permissible.Entity(Bar, id) {
     companion object : Permissible.Type by Permissible.Type<Bar>()
 }
 

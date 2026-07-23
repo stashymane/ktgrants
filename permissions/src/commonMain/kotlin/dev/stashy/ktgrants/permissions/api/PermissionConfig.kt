@@ -2,19 +2,41 @@ package dev.stashy.ktgrants.permissions.api
 
 import dev.stashy.ktgrants.permissions.Permission
 import dev.stashy.ktgrants.permissions.PermissionPolicy
-import dev.stashy.ktgrants.permissions.PermissionPolicyBuilder
 import dev.stashy.ktgrants.permissions.SubjectProvider
 import dev.stashy.ktgrants.permissions.api.dsl.GrantDsl
+import dev.stashy.ktgrants.permissions.config.PermissionPolicyBuilder
 import kotlin.jvm.JvmName
 
+/**
+ * The permission configuration of your project.
+ * This should be provided via context for downstream users of the permission system.
+ *
+ * ```
+ * object Permissions: PermissionConfig {
+ *     val Read by Grant
+ *     val Write by Grant
+ *
+ *     override val policy: PermissionPolicy = policyOf { /* ... */ }
+ * }
+ * ```
+ */
 public interface PermissionConfig : GrantDsl {
+    /**
+     * The policy of your configuration.
+     *
+     * Configure the default policy using [policyOf].
+     * Otherwise, you may implement a custom policy by implementing [PermissionPolicy].
+     */
     public val policy: PermissionPolicy
+
+    /**
+     * Configures the default [PermissionPolicy].
+     */
+    public fun policyOf(builder: PermissionPolicyBuilder.() -> Unit): PermissionPolicy =
+        PermissionPolicy.build(builder)
 
     public fun actor(subject: SubjectProvider, permissions: Set<Permission>): Actor =
         Actor.create(policy, subject, permissions)
-
-    public fun policyOf(builder: PermissionPolicyBuilder.() -> Unit): PermissionPolicy =
-        PermissionPolicy.build(builder)
 }
 
 @JvmName("permissionBuilderExtension")

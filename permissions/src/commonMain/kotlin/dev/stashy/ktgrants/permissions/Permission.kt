@@ -107,6 +107,17 @@ public value class Grant(public val value: String) : GrantProvider {
 
     override fun toGrant(): Grant = this
 
+    /**
+     * Delegate to create a [Grant] based on the delegated field name.
+     * The generated grant name is in kebab-case.
+     *
+     * ```
+     * object Model: PermissionConfig {
+     *     val Read by Grant // equivalent to Grant("read")
+     *     val ReadWrite by Grant // equivalent to Grant("read-write")
+     * }
+     * ```
+     */
     public companion object : PropertyDelegateProvider<Any, ReadOnlyProperty<Any, Grant>> {
         public val Any: Grant = Grant("*")
 

@@ -16,16 +16,18 @@ import dev.stashy.ktgrants.kotest.shouldInclude
 import dev.stashy.ktgrants.kotest.shouldNotInclude
 import dev.stashy.ktgrants.permissions.Permission
 import dev.stashy.ktgrants.permissions.PermissionPolicy
+import dev.stashy.ktgrants.permissions.Scope
 import dev.stashy.ktgrants.permissions.Subject
 import dev.stashy.ktgrants.permissions.api.dsl.GrantDsl.Companion.any
 import dev.stashy.ktgrants.permissions.api.dsl.GrantDsl.Companion.on
+import dev.stashy.ktgrants.permissions.config.provides
 import kotlin.test.Test
 
 class PermissionGraphTest {
     @Test
     fun `grant expansion`() {
         val model = PermissionPolicy.build {
-            graph {
+            grants {
                 FullControl provides setOf(Read, Write, Create, Delete)
             }
         }
@@ -66,6 +68,57 @@ class PermissionGraphTest {
     }
 
     @Test
+    fun `scope and subject expansion`() {
+        val model = PermissionPolicy.build {
+            scopes {
+                Scope("parent") provides setOf(Scope("child"))
+            }
+            subjects {
+                Subject("parent") provides setOf(Subject("child"))
+            }
+        }
+
+        val parentScope = Scope("parent")
+        val childScope = Scope("child")
+        val parentSubject = Subject("parent")
+        val childSubject = Subject("child")
+        val grant = Read
+
+        val permissions = model.process(sequenceOf(Permission(parentScope, parentSubject, grant)))
+
+        permissions shouldInclude Permission(parentScope, parentSubject, grant)
+        permissions shouldInclude Permission(childScope, parentSubject, grant)
+        permissions shouldInclude Permission(parentScope, childSubject, grant)
+        permissions shouldInclude Permission(childScope, childSubject, grant)
+    }
+
+    @Test
+    fun `typed expansion`() {
+        val model = PermissionPolicy.build {
+            scopes {
+                System provides setOf(Scope("bar"))
+            }
+            subjects {
+                Id("parent") provides setOf(Id("child"))
+            }
+            grants {
+                FullControl provides setOf(Read, Write)
+            }
+        }
+
+        val permissions = model.process(
+            sequenceOf(
+                Permission(System.toScope(), Id("parent").toSubject(), FullControl)
+            )
+        )
+
+        permissions shouldInclude Permission(System.toScope(), Id("parent").toSubject(), FullControl)
+        permissions shouldInclude Permission(Scope("bar"), Id("parent").toSubject(), Read)
+        permissions shouldInclude Permission(System.toScope(), Id("child").toSubject(), Write)
+        permissions shouldInclude Permission(Scope("bar"), Id("child").toSubject(), Read)
+    }
+
+    @Test
     fun `resolver order`() {
         val defaultPermission = Permission(System.scope, Subject.Any, Access)
         val accessFooPermission = Permission(Foo.scope, Subject.Any, Access)
@@ -76,23 +129,17 @@ class PermissionGraphTest {
         val model = PermissionPolicy.build {
             defaults = setOf(Permission(System.scope, Subject.Any, Access))
 
-            graph {
+            grants {
                 FullControl provides setOf(Access, Read, Write, Create, Delete)
-                Admin provides FullControl
+                Admin provides setOf(FullControl)
+            }
+
+            scopes {
+                System provides setOf(Foo, Bar)
             }
 
             wildcard {
                 subject = true
-            }
-
-            generator { permission ->
-                yield(permission)
-
-                if (permission.scope == System.scope) {
-                    sequenceOf(Foo.scope, Bar.scope).forEach {
-                        yield(permission.copy(scope = it))
-                    }
-                }
             }
         }
 

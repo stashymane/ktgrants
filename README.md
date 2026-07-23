@@ -60,7 +60,7 @@ object PermissionModel : PermissionConfig {
     // ...
 
     override val resolver: PermissionResolver = resolverOf {
-        graph {
+        grants {
             Admin provides setOf(Read, Write, Create, Delete)
         }
         wildcard {
@@ -80,7 +80,6 @@ context(PermissionModel) {
     )
 
     // user context expands permission entries
-    // can also use `lazy` to expand entries on-demand, but explicit expansion is preferred
     val userContext = UserContext(user)
 
     if (userContext.hasPermission { Read on foo }) { // checks if user has "foo:bar:read"

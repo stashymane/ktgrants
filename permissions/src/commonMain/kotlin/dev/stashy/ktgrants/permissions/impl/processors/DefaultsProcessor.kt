@@ -1,10 +1,10 @@
-package dev.stashy.ktgrants.permissions.impl.resolvers
+package dev.stashy.ktgrants.permissions.impl.processors
 
 import dev.stashy.ktgrants.permissions.Permission
 
-internal class DefaultGenerator(
+internal class DefaultsProcessor(
     private val defaults: Set<Permission>
-) : Resolver.Generator {
+) : PermissionProcessor {
     override fun process(permissions: Sequence<Permission>): Sequence<Permission> =
         defaults.asSequence() + permissions
 }
