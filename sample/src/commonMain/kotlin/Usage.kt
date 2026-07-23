@@ -2,7 +2,7 @@ import dev.stashy.ktgrants.permissions.Permission
 import dev.stashy.ktgrants.permissions.Subject
 import dev.stashy.ktgrants.permissions.api.Permissible
 import dev.stashy.ktgrants.permissions.api.hasPermission
-import dev.stashy.ktgrants.permissions.api.permission
+import dev.stashy.ktgrants.permissions.permission
 import model.*
 import model.PermissionModel.on
 

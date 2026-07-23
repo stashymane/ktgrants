@@ -18,9 +18,9 @@ import dev.stashy.ktgrants.permissions.Permission
 import dev.stashy.ktgrants.permissions.PermissionPolicy
 import dev.stashy.ktgrants.permissions.Scope
 import dev.stashy.ktgrants.permissions.Subject
-import dev.stashy.ktgrants.permissions.api.dsl.GrantDsl.Companion.any
-import dev.stashy.ktgrants.permissions.api.dsl.GrantDsl.Companion.on
 import dev.stashy.ktgrants.permissions.config.provides
+import dev.stashy.ktgrants.permissions.dsl.GrantDsl.Companion.any
+import dev.stashy.ktgrants.permissions.dsl.GrantDsl.Companion.on
 import kotlin.test.Test
 
 class PermissionGraphTest {

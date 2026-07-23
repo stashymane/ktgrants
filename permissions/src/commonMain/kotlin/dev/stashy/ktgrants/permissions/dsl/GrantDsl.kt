@@ -1,4 +1,4 @@
-package dev.stashy.ktgrants.permissions.api.dsl
+package dev.stashy.ktgrants.permissions.dsl
 
 import dev.stashy.ktgrants.permissions.*
 

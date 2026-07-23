@@ -2,6 +2,7 @@ package dev.stashy.ktgrants.permissions.api
 
 import dev.stashy.ktgrants.permissions.Permission
 import dev.stashy.ktgrants.permissions.PermissionCollection
+import dev.stashy.ktgrants.permissions.PermissionConfig
 import dev.stashy.ktgrants.permissions.PermissionPolicy
 
 public interface PermissionHolder {

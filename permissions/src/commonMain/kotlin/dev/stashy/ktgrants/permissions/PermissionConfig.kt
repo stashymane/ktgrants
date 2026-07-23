@@ -1,10 +1,8 @@
-package dev.stashy.ktgrants.permissions.api
+package dev.stashy.ktgrants.permissions
 
-import dev.stashy.ktgrants.permissions.Permission
-import dev.stashy.ktgrants.permissions.PermissionPolicy
-import dev.stashy.ktgrants.permissions.SubjectProvider
-import dev.stashy.ktgrants.permissions.api.dsl.GrantDsl
+import dev.stashy.ktgrants.permissions.api.Actor
 import dev.stashy.ktgrants.permissions.config.PermissionPolicyBuilder
+import dev.stashy.ktgrants.permissions.dsl.GrantDsl
 import kotlin.jvm.JvmName
 
 /**
