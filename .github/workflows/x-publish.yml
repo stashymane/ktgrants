@@ -39,10 +39,14 @@ jobs:
         run: |
           VERSION_NAME="$(date -u '+%Y%m%d')-SNAPSHOT"
           echo "version-name=$VERSION_NAME" >> $GITHUB_OUTPUT
+
   publish:
     name: Publish ${{ needs.prepare.outputs.version-name }}
     needs: prepare
     runs-on: ubuntu-latest
+    env:
+      ORG_GRADLE_PROJECT_VERSION_NAME: ${{ needs.prepare.outputs.version-name }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -55,11 +59,12 @@ jobs:
           gradle-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
           cache-overwrite-existing: 'true'
 
+      - name: Generate documentation
+        run: ./gradlew dokkaGenerate
+
       - name: Publish to Maven Central
         run: ./gradlew publishToMavenCentral
         env:
-          ORG_GRADLE_PROJECT_VERSION_NAME: ${{ needs.prepare.outputs.version-name }}
-
           ORG_GRADLE_PROJECT_mavenCentralPublishing: 'true'
           ORG_GRADLE_PROJECT_signAllPublications: 'true'
 
@@ -69,10 +74,21 @@ jobs:
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_KEY }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
 
+      - name: Upload static files as artifact
+        id: docs-deployment
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/build/dokka/html/
 
-#      - name: Upload build reports
-#        uses: actions/upload-artifact@v7
-#        if: always()
-#        with:
-#          name: build-reports
-#          path: '**/build/reports/'
+  publish-docs:
+    name: Publish documentation
+    if: inputs.snapshot == false
+    needs: publish
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.docs-deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
