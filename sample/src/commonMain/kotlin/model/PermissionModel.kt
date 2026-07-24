@@ -1,6 +1,7 @@
 package model
 
 import System
+import dev.stashy.ktgrants.authorization.api.AuthConfig
 import dev.stashy.ktgrants.permissions.Grant
 import dev.stashy.ktgrants.permissions.PermissionConfig
 import dev.stashy.ktgrants.permissions.PermissionPolicy
@@ -8,7 +9,7 @@ import dev.stashy.ktgrants.permissions.Scope
 import dev.stashy.ktgrants.permissions.config.provides
 
 // the permission model that will handle permission resolution
-object PermissionModel : PermissionConfig {
+object PermissionModel : PermissionConfig, AuthConfig {
     val Read by Grant
     val Write by Grant
     val Create by Grant

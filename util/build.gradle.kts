@@ -5,8 +5,6 @@ import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.dokka)
-    alias(libs.plugins.mavenPublish)
 
     id("multiplatform.target.jvm")
     id("multiplatform.target.wasmJs")
@@ -14,8 +12,6 @@ plugins {
 }
 
 kotlin {
-    explicitApi()
-
     js {
         browser {
             testTask {
@@ -34,17 +30,7 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(projects.util)
-            
             implementation(libs.kotlinx.serialization.core)
-        }
-
-        commonTest.dependencies {
-            implementation(projects.kotestAssertions)
-            implementation(libs.kotest.assertions)
-            implementation(libs.kotlin.test)
-
-            implementation(libs.kotlinx.serialization.json)
         }
     }
 }

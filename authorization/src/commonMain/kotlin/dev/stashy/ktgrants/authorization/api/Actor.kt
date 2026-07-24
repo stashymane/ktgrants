@@ -1,8 +1,9 @@
-package dev.stashy.ktgrants.permissions.api
+package dev.stashy.ktgrants.authorization.api
 
 import dev.stashy.ktgrants.permissions.Permission
 import dev.stashy.ktgrants.permissions.PermissionPolicy
 import dev.stashy.ktgrants.permissions.SubjectProvider
+import dev.stashy.ktgrants.permissions.api.PermissionHolder
 
 public interface Actor : SubjectProvider, PermissionHolder {
     public companion object {

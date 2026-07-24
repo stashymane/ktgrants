@@ -1,7 +1,7 @@
 package model
 
+import dev.stashy.ktgrants.authorization.api.Actor
 import dev.stashy.ktgrants.permissions.Permission
-import dev.stashy.ktgrants.permissions.api.Actor
 
 // basic user data model/entity
 data class User(

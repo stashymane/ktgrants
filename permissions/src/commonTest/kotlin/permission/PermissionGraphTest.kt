@@ -112,22 +112,22 @@ class PermissionGraphTest {
             )
         )
 
-        permissions shouldInclude Permission(System.toScope(), Id("parent").toSubject(), FullControl)
+        permissions shouldInclude Permission(System, Id("parent").toSubject(), FullControl)
         permissions shouldInclude Permission(Scope("bar"), Id("parent").toSubject(), Read)
-        permissions shouldInclude Permission(System.toScope(), Id("child").toSubject(), Write)
+        permissions shouldInclude Permission(System, Id("child").toSubject(), Write)
         permissions shouldInclude Permission(Scope("bar"), Id("child").toSubject(), Read)
     }
 
     @Test
     fun `resolver order`() {
-        val defaultPermission = Permission(System.scope, Subject.Any, Access)
-        val accessFooPermission = Permission(Foo.scope, Subject.Any, Access)
-        val readFooPermission = Permission(Foo.scope, Subject.Any, Read)
-        val accessSpecificFooPermission = Permission(Foo.scope, Subject("identifier"), Access)
-        val readSpecificFooPermission = Permission(Foo.scope, Subject("identifier"), Read)
+        val defaultPermission = Permission(System, Subject.Any, Access)
+        val accessFooPermission = Permission(Foo, Subject.Any, Access)
+        val readFooPermission = Permission(Foo, Subject.Any, Read)
+        val accessSpecificFooPermission = Permission(Foo, Subject("identifier"), Access)
+        val readSpecificFooPermission = Permission(Foo, Subject("identifier"), Read)
 
         val model = PermissionPolicy.build {
-            defaults = setOf(Permission(System.scope, Subject.Any, Access))
+            defaults = setOf(Permission(System, Subject.Any, Access))
 
             grants {
                 FullControl provides setOf(Access, Read, Write, Create, Delete)
@@ -144,7 +144,7 @@ class PermissionGraphTest {
         }
 
         val defaultUser = model.process(sequenceOf())
-        val adminUser = model.process(sequenceOf(Permission(System.scope, Subject.Any, Admin)))
+        val adminUser = model.process(sequenceOf(Permission(System, Subject.Any, Admin)))
 
         defaultUser shouldInclude defaultPermission
         adminUser shouldInclude defaultPermission

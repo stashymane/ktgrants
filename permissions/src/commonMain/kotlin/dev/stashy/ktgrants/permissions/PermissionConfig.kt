@@ -1,6 +1,5 @@
 package dev.stashy.ktgrants.permissions
 
-import dev.stashy.ktgrants.permissions.api.Actor
 import dev.stashy.ktgrants.permissions.config.PermissionPolicyBuilder
 import dev.stashy.ktgrants.permissions.dsl.GrantDsl
 import kotlin.jvm.JvmName
@@ -30,11 +29,8 @@ public interface PermissionConfig : GrantDsl {
     /**
      * Configures the default [PermissionPolicy].
      */
-    public fun policyOf(builder: PermissionPolicyBuilder.() -> Unit): PermissionPolicy =
+    public fun policyOf(builder: PermissionPolicyBuilder.() -> Unit = {}): PermissionPolicy =
         PermissionPolicy.build(builder)
-
-    public fun actor(subject: SubjectProvider, permissions: Set<Permission>): Actor =
-        Actor.create(policy, subject, permissions)
 }
 
 @JvmName("permissionBuilderExtension")

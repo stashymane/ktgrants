@@ -1,7 +1,7 @@
 package dev.stashy.ktgrants.permissions
 
-import dev.stashy.ktgrants.permissions.impl.pascalToKebab
-import dev.stashy.ktgrants.permissions.impl.verifyValue
+import dev.stashy.ktgrants.util.pascalToKebab
+import dev.stashy.ktgrants.util.verifyValue
 import kotlinx.serialization.Serializable
 import kotlin.jvm.JvmInline
 import kotlin.properties.PropertyDelegateProvider
@@ -22,6 +22,9 @@ public data class Permission(
     val subject: Subject,
     val grant: Grant
 ) {
+    public constructor(scope: ScopeProvider, subject: SubjectProvider, grant: GrantProvider) :
+            this(scope.toScope(), subject.toSubject(), grant.toGrant())
+
     public companion object {
         private const val DELIMITER = ':'
 

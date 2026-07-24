@@ -12,6 +12,7 @@ kotlin {
     sourceSets.commonMain {
         dependencies {
             implementation(projects.permissions)
+            implementation(projects.authorization)
         }
     }
 }

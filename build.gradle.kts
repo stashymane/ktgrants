@@ -10,6 +10,7 @@ plugins {
 
 dependencies {
     dokka(projects.permissions)
+    dokka(projects.authorization)
 }
 
 dokka {
