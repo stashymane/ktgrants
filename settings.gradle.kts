@@ -26,7 +26,8 @@ include(
     "permissions",
     "authorization",
     "kotest-assertions",
-    "sample"
+    "sample",
+    "docs"
 )
 
 rootProject.name = "ktgrants"

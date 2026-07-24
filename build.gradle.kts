@@ -5,14 +5,5 @@ plugins {
     alias(libs.plugins.kotlin.serialization) apply false
     alias(libs.plugins.mavenPublish) apply false
 
-    alias(libs.plugins.dokka)
-}
-
-dependencies {
-    dokka(projects.permissions)
-    dokka(projects.authorization)
-}
-
-dokka {
-
+    alias(libs.plugins.dokka) apply false
 }
