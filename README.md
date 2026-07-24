@@ -4,7 +4,7 @@
 ![Maven Snapshot](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Fdev%2Fstashy%2Fktgrants%2Fpermissions%2Fmaven-metadata.xml&strategy=latestProperty&label=snapshot)
 
 ---
-(soon to be) ergonomic permission/grant library
+ergonomic permission and authorization library
 
 > [!WARNING]
 > Currently only available as a snapshot. Check the snapshot instructions below.
@@ -22,6 +22,7 @@ ktgrants = "version"
 
 [libs]
 ktgrants-permissions = { module = "dev.stashy.ktgrants:permissions", version.ref = "ktgrants" }
+ktgrants-authorization = { module = "dev.stashy.ktgrants:authorization", version.ref = "ktgrants" }
 ```
 
 <details>
