@@ -22,7 +22,7 @@ plugins {
 }
 
 include(
-    "util",
+    "internal",
     "permissions",
     "authorization",
     "kotest-assertions",

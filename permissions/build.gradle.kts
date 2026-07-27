@@ -34,8 +34,8 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(projects.util)
-            
+            implementation(projects.internal)
+
             implementation(libs.kotlinx.serialization.core)
         }
 

@@ -1,7 +1,8 @@
 package dev.stashy.ktgrants.permissions
 
-import dev.stashy.ktgrants.util.pascalToKebab
-import dev.stashy.ktgrants.util.verifyValue
+import dev.stashy.ktgrants.internal.KtgrantsInternalApi
+import dev.stashy.ktgrants.internal.pascalToKebab
+import dev.stashy.ktgrants.verifyValue
 import kotlinx.serialization.Serializable
 import kotlin.jvm.JvmInline
 import kotlin.properties.PropertyDelegateProvider
@@ -60,6 +61,7 @@ public data class Permission(
 @Serializable
 @JvmInline
 public value class Scope(public val value: String) : ScopeProvider {
+    @OptIn(KtgrantsInternalApi::class)
     public constructor(type: KClass<*>) : this(type.simpleName!!.pascalToKebab())
 
     init {
@@ -124,6 +126,7 @@ public value class Grant(public val value: String) : GrantProvider {
     public companion object : PropertyDelegateProvider<Any, ReadOnlyProperty<Any, Grant>> {
         public val Any: Grant = Grant("*")
 
+        @OptIn(KtgrantsInternalApi::class)
         override fun provideDelegate(
             thisRef: Any,
             property: KProperty<*>

@@ -35,8 +35,8 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api(projects.permissions)
-            implementation(projects.util)
-            
+            implementation(projects.internal)
+
             implementation(libs.kotlinx.serialization.core)
         }
 

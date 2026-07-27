@@ -1,6 +1,7 @@
 package dev.stashy.ktgrants.authorization
 
-import dev.stashy.ktgrants.util.pascalToKebab
+import dev.stashy.ktgrants.internal.KtgrantsInternalApi
+import dev.stashy.ktgrants.internal.pascalToKebab
 import kotlinx.serialization.Serializable
 import kotlin.jvm.JvmInline
 import kotlin.properties.PropertyDelegateProvider
@@ -22,6 +23,7 @@ public value class Action(public val name: String) {
      * ```
      */
     public companion object : PropertyDelegateProvider<Any, ReadOnlyProperty<Any, Action>> {
+        @OptIn(KtgrantsInternalApi::class)
         override fun provideDelegate(
             thisRef: Any,
             property: KProperty<*>
