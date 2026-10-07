@@ -52,9 +52,9 @@ class DslTest {
         val bar = Bar(Id("bar"), "test")
         val actor = config.actor(foo, emptySet())
 
-        with(config) {
-            assertTrue(actor.authorize(Writing, bar, "allowed"))
-            assertFalse(actor.authorize(Writing, bar, "denied"))
+        context(config) {
+            assertTrue(actor.authorize(config.Writing, bar, "allowed"))
+            assertFalse(actor.authorize(config.Writing, bar, "denied"))
         }
     }
 

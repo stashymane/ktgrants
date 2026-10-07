@@ -5,8 +5,8 @@ import dev.stashy.ktgrants.authorization.Requirement
 import dev.stashy.ktgrants.authorization.RequirementContext
 import dev.stashy.ktgrants.authorization.api.Actor
 
-public interface AuthDsl {
-    public companion object : AuthDsl
+public interface AuthorizerDsl {
+    public companion object : AuthorizerDsl
 
     context(ctx: RequirementContext<E>)
     public val <E> action: Action get() = ctx.action

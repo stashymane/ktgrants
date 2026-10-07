@@ -1,6 +1,7 @@
 package dev.stashy.ktgrants.authorization.api
 
 import dev.stashy.ktgrants.authorization.Action
+import dev.stashy.ktgrants.authorization.Authorization
 import dev.stashy.ktgrants.permissions.Permission
 import dev.stashy.ktgrants.permissions.PermissionConfig
 import dev.stashy.ktgrants.permissions.PermissionPolicy
@@ -32,6 +33,15 @@ public interface Actor : SubjectProvider, PermissionHolder {
             permissions: Set<Permission>
         ): Actor = ActorDelegate(policy, subject, permissions)
     }
+}
+
+context(config: P)
+public inline fun <E, P> Actor.authorize(
+    builder: P.() -> Authorization<E>,
+): Boolean
+        where E : Authorized<E, P>, P : AuthConfig {
+    val request = builder(config)
+    return authorize(request.action, request.entity)
 }
 
 internal class ActorDelegate(

@@ -1,3 +1,4 @@
+import dev.stashy.ktgrants.authorization.api.authorize
 import dev.stashy.ktgrants.permissions.permission
 import model.*
 
@@ -11,7 +12,7 @@ fun authSample() {
     )
     val userContext = UserContext(user)
 
-    if (userContext.authorize(PermissionModel.Reading, foo)) {
+    if (userContext.authorize { Reading the foo }) {
         // read foo
     } else {
         throw IllegalArgumentException("User ${user.id} is not allowed to read ${foo.id}")

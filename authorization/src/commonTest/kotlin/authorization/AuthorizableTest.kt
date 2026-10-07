@@ -2,6 +2,7 @@ package authorization
 
 import Foo
 import Id
+import dev.stashy.ktgrants.authorization.api.authorize
 import dev.stashy.ktgrants.permissions.dsl.GrantDsl.Companion.on
 import kotlin.test.Test
 import kotlin.test.assertFalse
@@ -15,10 +16,10 @@ class AuthorizableTest {
     fun `authorize delegates to entity authorizer`() {
         val actor = config.actor(foo, setOf(config.Read on foo))
 
-        with(config) {
-            assertTrue(actor.authorize(Reading, foo))
-            assertTrue(actor.authorize(Creating, foo))
-            assertFalse(actor.authorize(Writing, foo))
+        context(config) {
+            assertTrue(actor.authorize { Reading the foo })
+            assertTrue(actor.authorize { Creating the foo })
+            assertFalse(actor.authorize { Writing the foo })
         }
     }
 }
