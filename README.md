@@ -7,7 +7,8 @@
 ergonomic permission and authorization library
 
 > [!WARNING]
-> Currently only available as a snapshot. Check the snapshot instructions below.
+> Currently only available as a snapshot. Check the snapshot instructions below.  
+> Full release depends on [Kotlin multi-field value class support][MFVC support].
 
 ## Setup
 
@@ -50,6 +51,8 @@ repositories {
 
 Based on the source available in the `sample` module.
 
+### Model
+
 ```kotlin
 object PermissionModel : PermissionConfig {
     val Read by Grant
@@ -69,18 +72,26 @@ object PermissionModel : PermissionConfig {
         }
     }
 }
+```
+
+### Permissions
+
+```kotlin
+data class Foo(val id: Id) : Permissible.Entity by Foo.withSubject(id) {
+    companion object : Permissible.Type by Permissible.Type<Foo>()
+}
 
 context(PermissionModel) {
     // entity we want to authorize for
     val foo = Foo(id = Id("bar"), content = "baz")
 
-    // user model that only stores data
+    // pretend this is data fetched from the database
     val user = User(
         id = Id("user-1"), // `Id` implements `SubjectProvider`
         permissions = setOf(permission { Read any Foo }) // gives user "foo:*:read" permission
     )
 
-    // user context expands permission entries
+    // user context expands permission entries based on the current model
     val userContext = UserContext(user)
 
     if (userContext.hasPermission { Read on foo }) { // checks if user has "foo:bar:read"
@@ -90,3 +101,45 @@ context(PermissionModel) {
     }
 }
 ```
+
+### Authorization
+
+```kotlin
+// authorizers should preferably be constructed only once,
+// therefore putting them inside of classes is discouraged
+private object FooAuthorizer : Authorizer<Foo, PermissionModel> by Authorizer({
+    on(Reading or Creating) {
+        ensure { actor.hasPermission { Read on target } }
+        // additional checks if needed
+    }
+    on(Writing) {
+        ensure { actor.hasPermission { Write on target } }
+    }
+    on(Deleting) {
+        deny()
+    }
+})
+
+// updated Foo class from the Permissions example, now implementing Authorized<...>
+data class Foo(val id: Id) : Permissible.Entity by Foo.withSubject(id),
+    Authorized<Foo, PermissionModel> by Authorized.by(FooAuthorizer) {
+    companion object : Permissible.Type by Permissible.Type<Foo>()
+}
+
+context(PermissionModel) {
+    // same setup as before
+    val foo = Foo(id = Id("bar"), content = "baz")
+    val user = User(
+        id = Id("user-1"),
+        permissions = setOf(permission { Read any Foo })
+    )
+    val userContext = UserContext(user)
+
+    // the important bit:
+    if (userContext.authorize { Reading the foo }) {
+        // etc.
+    }
+}
+```
+
+[MFVC support]: https://youtrack.jetbrains.com/issue/KT-77734
