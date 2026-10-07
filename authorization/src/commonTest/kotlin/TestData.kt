@@ -1,6 +1,8 @@
 import authorization.AuthModel
 import dev.stashy.ktgrants.authorization.api.Authorized
 import dev.stashy.ktgrants.authorization.api.Authorizer
+import dev.stashy.ktgrants.authorization.api.ContextualAuthorizer
+import dev.stashy.ktgrants.authorization.api.ContextuallyAuthorized
 import dev.stashy.ktgrants.authorization.or
 import dev.stashy.ktgrants.permissions.Subject
 import dev.stashy.ktgrants.permissions.SubjectProvider
@@ -31,12 +33,19 @@ data class Foo(
 data class Bar(
     val id: Id,
     val description: String
-) : Permissible.Entity by Permissible.Entity(Bar, id) {
+) : Permissible.Entity by Bar.withSubject(id),
+    ContextuallyAuthorized<Bar, AuthModel, String> by Authorized.by(BarAuthorizer) {
     companion object : Permissible.Type by Permissible.Type<Bar>()
 }
 
 private object FooAuthorizer : Authorizer<Foo, AuthModel> by Authorizer({
     on(Reading or Creating) {
         ensure { actor.hasPermission { Read on target } }
+    }
+})
+
+private object BarAuthorizer : ContextualAuthorizer<Bar, AuthModel, String> by ContextualAuthorizer({ reason ->
+    on(Writing) {
+        ensure { reason == "allowed" }
     }
 })

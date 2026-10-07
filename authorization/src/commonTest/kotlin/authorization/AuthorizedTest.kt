@@ -13,32 +13,32 @@ import kotlin.test.assertSame
 class AuthorizedTest {
     @Test
     fun `authorizer getter forwards to authorizer object`() {
-        val foo = AuthorizedFoo(Id("foo"), "test")
+        val foo = ContextuallyAuthorizedFoo(Id("foo"), "test")
 
-        assertSame(AuthorizedFooAuthorizer, foo.authorizer)
+        assertSame(ContextuallyAuthorizedFooAuthorizer, foo.authorizer)
     }
 
     @Test
     fun `composes with permissible entity`() {
-        val foo = AuthorizedFoo(Id("foo"), "test")
+        val foo = ContextuallyAuthorizedFoo(Id("foo"), "test")
 
         assertEquals(Subject("foo"), foo.subject)
-        assertEquals(AuthorizedFoo.scope, foo.scope)
+        assertEquals(ContextuallyAuthorizedFoo.scope, foo.scope)
     }
 }
 
-private object AuthorizedFooAuthorizer : Authorizer<AuthorizedFoo, AuthModel> by Authorizer({
+private object ContextuallyAuthorizedFooAuthorizer : Authorizer<ContextuallyAuthorizedFoo, AuthModel> by Authorizer({
     on(Reading or Creating) {
         ensure { true }
     }
-}), Authorized<AuthorizedFoo, AuthModel> {
+}), Authorized<ContextuallyAuthorizedFoo, AuthModel> {
     override val authorizer get() = this
 }
 
-private data class AuthorizedFoo(
+private data class ContextuallyAuthorizedFoo(
     val id: Id,
     val name: String,
-) : Permissible.Entity by AuthorizedFoo.withSubject(id),
-    Authorized<AuthorizedFoo, AuthModel> by AuthorizedFooAuthorizer {
-    companion object : Permissible.Type by Permissible.Type<AuthorizedFoo>()
+) : Permissible.Entity by ContextuallyAuthorizedFoo.withSubject(id),
+    Authorized<ContextuallyAuthorizedFoo, AuthModel> by ContextuallyAuthorizedFooAuthorizer {
+    companion object : Permissible.Type by Permissible.Type<ContextuallyAuthorizedFoo>()
 }

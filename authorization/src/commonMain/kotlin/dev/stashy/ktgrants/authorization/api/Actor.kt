@@ -9,10 +9,21 @@ import dev.stashy.ktgrants.permissions.api.PermissionHolder
 
 public interface Actor : SubjectProvider, PermissionHolder {
     context(config: P)
-    public fun <E : Authorized<E, P>, P : PermissionConfig> authorize(
+    public fun <E, P> authorize(
         action: Action,
-        entity: E
-    ): Boolean = entity.authorizer.verify(entity, this, action)
+        entity: E,
+    ): Boolean
+            where E : Authorized<E, P>, P : PermissionConfig =
+        entity.authorizer.verify(entity, this, action, Unit)
+
+    context(config: P)
+    public fun <E, P, C> authorize(
+        action: Action,
+        entity: E,
+        context: C,
+    ): Boolean
+            where E : ContextuallyAuthorized<E, P, C>, P : PermissionConfig =
+        entity.authorizer.verify(entity, this, action, context)
 
     public companion object {
         public fun create(

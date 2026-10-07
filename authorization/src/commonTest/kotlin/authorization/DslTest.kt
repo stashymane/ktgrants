@@ -1,5 +1,6 @@
 package authorization
 
+import Bar
 import Foo
 import Id
 import dev.stashy.ktgrants.authorization.api.Authorizer
@@ -43,6 +44,17 @@ class DslTest {
         with(config) {
             assertTrue(authorizer.verify(foo, actor, Reading, Unit))
             assertFalse(authorizer.verify(foo, actor, Writing, Unit))
+        }
+    }
+
+    @Test
+    fun `contextual authorize delegates to entity authorizer`() {
+        val bar = Bar(Id("bar"), "test")
+        val actor = config.actor(foo, emptySet())
+
+        with(config) {
+            assertTrue(actor.authorize(Writing, bar, "allowed"))
+            assertFalse(actor.authorize(Writing, bar, "denied"))
         }
     }
 
