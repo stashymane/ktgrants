@@ -4,6 +4,7 @@ import dev.stashy.ktgrants.permissions.Permission
 import dev.stashy.ktgrants.permissions.PermissionCollection
 import dev.stashy.ktgrants.permissions.PermissionConfig
 import dev.stashy.ktgrants.permissions.PermissionPolicy
+import kotlin.jvm.JvmInline
 
 public interface PermissionHolder {
     public val permissions: PermissionCollection
@@ -16,7 +17,8 @@ public interface PermissionHolder {
     }
 }
 
-private class PermissionHolderDelegate(override val permissions: PermissionCollection) : PermissionHolder
+@JvmInline
+private value class PermissionHolderDelegate(override val permissions: PermissionCollection) : PermissionHolder
 
 context(config: T)
 public inline fun <T : PermissionConfig> PermissionHolder.hasPermission(builder: T.() -> Permission): Boolean =

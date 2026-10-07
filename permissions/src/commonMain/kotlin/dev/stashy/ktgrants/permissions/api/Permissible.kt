@@ -4,6 +4,7 @@ import dev.stashy.ktgrants.permissions.Scope
 import dev.stashy.ktgrants.permissions.ScopeProvider
 import dev.stashy.ktgrants.permissions.Subject
 import dev.stashy.ktgrants.permissions.SubjectProvider
+import kotlin.jvm.JvmInline
 
 public sealed interface Permissible {
     public interface Entity : Permissible, ScopeProvider, SubjectProvider {
@@ -20,7 +21,7 @@ public sealed interface Permissible {
                 Snapshot(scopeProvider.toScope(), subjectProvider.toSubject())
         }
     }
-    
+
     public interface Type : Permissible, ScopeProvider {
         public val scope: Scope
 
@@ -28,7 +29,8 @@ public sealed interface Permissible {
 
         override fun toScope(): Scope = scope
 
-        private data class Snapshot(override val scope: Scope) : Type
+        @JvmInline
+        private value class Snapshot(override val scope: Scope) : Type
 
         public companion object {
             public operator fun invoke(scope: Scope): Type = Snapshot(scope)
