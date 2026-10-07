@@ -1,6 +1,11 @@
+import authorization.AuthModel
+import dev.stashy.ktgrants.authorization.api.Authorized
+import dev.stashy.ktgrants.authorization.api.Authorizer
+import dev.stashy.ktgrants.authorization.or
 import dev.stashy.ktgrants.permissions.Subject
 import dev.stashy.ktgrants.permissions.SubjectProvider
 import dev.stashy.ktgrants.permissions.api.Permissible
+import dev.stashy.ktgrants.permissions.api.hasPermission
 import kotlinx.serialization.Serializable
 import kotlin.jvm.JvmInline
 
@@ -11,10 +16,14 @@ value class Id(val value: String) : SubjectProvider {
 }
 
 @Serializable
+object System : Permissible.Type by Permissible.Type<System>()
+
+@Serializable
 data class Foo(
     val id: Id,
     val name: String
-) : Permissible.Entity by Foo.withSubject(id) {
+) : Permissible.Entity by Foo.withSubject(id),
+    Authorized<Foo, AuthModel> by Authorized.by(FooAuthorizer) {
     companion object : Permissible.Type by Permissible.Type<Foo>()
 }
 
@@ -26,5 +35,8 @@ data class Bar(
     companion object : Permissible.Type by Permissible.Type<Bar>()
 }
 
-@Serializable
-object System : Permissible.Type by Permissible.Type<System>()
+private object FooAuthorizer : Authorizer<Foo, AuthModel> by Authorizer({
+    on(Reading or Creating) {
+        ensure { actor.hasPermission { Read on target } }
+    }
+})
