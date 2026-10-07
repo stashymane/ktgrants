@@ -2,8 +2,8 @@ package authorization
 
 import Foo
 import Id
-import dev.stashy.ktgrants.authorization.api.Actionable
-import dev.stashy.ktgrants.authorization.api.ContextualActionable
+import dev.stashy.ktgrants.authorization.api.Authorizer
+import dev.stashy.ktgrants.authorization.api.ContextualAuthorizer
 import dev.stashy.ktgrants.authorization.or
 import dev.stashy.ktgrants.permissions.api.hasPermission
 import dev.stashy.ktgrants.permissions.dsl.GrantDsl.Companion.on
@@ -16,8 +16,8 @@ class DslTest {
     private val config = AuthModel
 
     @Test
-    fun `actionable verification`() {
-        val authorizer = Actionable<Foo, AuthModel> {
+    fun `authorizable verification`() {
+        val authorizer = Authorizer<Foo, AuthModel> {
             on(Reading or Creating) {
                 ensure { actor.hasPermission { Read on target } }
             }
@@ -25,16 +25,16 @@ class DslTest {
         val actor = config.actor(foo, setOf(config.Read on foo))
 
         with(config) {
-            assertTrue(authorizer.verifyAction(foo, actor, Reading))
-            assertTrue(authorizer.verifyAction(foo, actor, Creating))
-            assertFalse(authorizer.verifyAction(foo, actor, Writing))
+            assertTrue(authorizer.verify(foo, actor, Reading))
+            assertTrue(authorizer.verify(foo, actor, Creating))
+            assertFalse(authorizer.verify(foo, actor, Writing))
         }
     }
 
     @Test
-    fun `contextual actionable verification`() {
+    fun `contextual authorizable verification`() {
         val authorizer =
-            ContextualActionable<Foo, AuthModel, String> { reason ->
+            ContextualAuthorizer<Foo, AuthModel, String> { reason ->
                 on(Writing) {
                     ensure { reason == "allowed" }
                 }
@@ -42,8 +42,8 @@ class DslTest {
         val actor = config.actor(foo, emptySet())
 
         with(config) {
-            assertTrue(authorizer.verifyAction(foo, actor, Writing, "allowed"))
-            assertFalse(authorizer.verifyAction(foo, actor, Writing, "denied"))
+            assertTrue(authorizer.verify(foo, actor, Writing, "allowed"))
+            assertFalse(authorizer.verify(foo, actor, Writing, "denied"))
         }
     }
 }

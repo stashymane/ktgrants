@@ -1,6 +1,7 @@
 package model
 
 import System
+import dev.stashy.ktgrants.authorization.Action
 import dev.stashy.ktgrants.authorization.api.AuthConfig
 import dev.stashy.ktgrants.permissions.Grant
 import dev.stashy.ktgrants.permissions.PermissionConfig
@@ -18,6 +19,11 @@ object PermissionModel : PermissionConfig, AuthConfig {
     object Role {
         val Admin by Grant
     }
+
+    val Reading by Action
+    val Writing by Action
+    val Creating by Action
+    val Deleting by Action
 
     override val policy: PermissionPolicy = policyOf {
         defaults = setOf(Read any System)

@@ -17,7 +17,8 @@ val user = User(
 )
 
 // DSL via context
-fun contextService() = context(PermissionModel) {
+context(_: PermissionModel)
+fun contextService() {
     val foo = Foo(id = Id("bar"), content = "baz")
     val userContext = UserContext(user)
 
@@ -28,14 +29,14 @@ fun contextService() = context(PermissionModel) {
     }
 }
 
-// without context
+// without context or using lambdas
 fun simpleService() {
     val systemId = Subject("dev1")
     val actor = PermissionModel.actor(
         Id("actor"),
         setOf(PermissionModel.Role.Admin on System.withSubject(systemId))
     )
-    val permission = Permission(System.scope, systemId, PermissionModel.Write)
+    val permission = Permission(System, systemId, PermissionModel.Write)
 
     if (actor.hasPermission(permission)) {
         // write

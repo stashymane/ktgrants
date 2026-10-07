@@ -6,45 +6,45 @@ import dev.stashy.ktgrants.authorization.RequirementBuilder
 import dev.stashy.ktgrants.authorization.RequirementContextImpl
 import dev.stashy.ktgrants.permissions.PermissionConfig
 
-public interface Actionable<E, P : PermissionConfig> {
+public interface Authorizer<E, P : PermissionConfig> {
     context(config: P)
-    public fun verifyAction(entity: E, actor: Actor, action: Action): Boolean
+    public fun verify(entity: E, actor: Actor, action: Action): Boolean
 
     public companion object {
         public operator fun <E, P : PermissionConfig> invoke(
             builder: RequirementBuilder<E, P>
-        ): Actionable<E, P> = ActionableDelegate(builder)
+        ): Authorizer<E, P> = AuthorizerDelegate(builder)
     }
 }
 
-public interface ContextualActionable<E, P : PermissionConfig, C> {
+public interface ContextualAuthorizer<E, P : PermissionConfig, C> {
     context(config: P)
-    public fun verifyAction(entity: E, actor: Actor, action: Action, context: C): Boolean
+    public fun verify(entity: E, actor: Actor, action: Action, context: C): Boolean
 
     public companion object {
         public operator fun <E, P : PermissionConfig, C> invoke(
             builder: ContextualRequirementBuilder<E, P, C>
-        ): ContextualActionable<E, P, C> =
-            ContextualActionableDelegate(builder)
+        ): ContextualAuthorizer<E, P, C> =
+            ContextualAuthorizerDelegate(builder)
     }
 }
 
-internal class ActionableDelegate<E, P : PermissionConfig>(
+internal class AuthorizerDelegate<E, P : PermissionConfig>(
     private val builder: RequirementBuilder<E, P>
-) : Actionable<E, P> {
+) : Authorizer<E, P> {
     context(config: P)
-    override fun verifyAction(entity: E, actor: Actor, action: Action): Boolean {
+    override fun verify(entity: E, actor: Actor, action: Action): Boolean {
         val requirementContext = RequirementContextImpl(action, entity, actor)
         builder.invoke(requirementContext, config)
         return requirementContext.result()
     }
 }
 
-internal class ContextualActionableDelegate<E, P : PermissionConfig, C>(
+internal class ContextualAuthorizerDelegate<E, P : PermissionConfig, C>(
     private val builder: ContextualRequirementBuilder<E, P, C>
-) : ContextualActionable<E, P, C> {
+) : ContextualAuthorizer<E, P, C> {
     context(config: P)
-    override fun verifyAction(entity: E, actor: Actor, action: Action, context: C): Boolean {
+    override fun verify(entity: E, actor: Actor, action: Action, context: C): Boolean {
         val requirementContext = RequirementContextImpl(action, entity, actor)
         builder.invoke(requirementContext, config, context)
         return requirementContext.result()
