@@ -12,11 +12,6 @@ ergonomic permission and authorization library
 
 ## Setup
 
-> [!NOTE]
-> For a full example, check out the sample submodule.
-
-`versions.toml`
-
 ```toml
 [versions]
 ktgrants = "version"
@@ -49,7 +44,10 @@ repositories {
 
 ## Example
 
-Based on the source available in the `sample` module.
+> [!NOTE]
+> For a full example, check out the sample submodule.
+
+`versions.toml`
 
 ### Model
 
