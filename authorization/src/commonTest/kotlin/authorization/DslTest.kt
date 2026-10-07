@@ -32,6 +32,21 @@ class DslTest {
     }
 
     @Test
+    fun `authorizer is usable as contextual authorizer with unit context`() {
+        val authorizer: ContextualAuthorizer<Foo, AuthModel, Unit> = Authorizer<Foo, AuthModel> {
+            on(Reading) {
+                ensure { true }
+            }
+        }
+        val actor = config.actor(foo, emptySet())
+
+        with(config) {
+            assertTrue(authorizer.verify(foo, actor, Reading, Unit))
+            assertFalse(authorizer.verify(foo, actor, Writing, Unit))
+        }
+    }
+
+    @Test
     fun `contextual authorizable verification`() {
         val authorizer =
             ContextualAuthorizer<Foo, AuthModel, String> { reason ->

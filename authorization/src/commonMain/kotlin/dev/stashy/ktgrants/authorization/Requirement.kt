@@ -11,8 +11,8 @@ public fun interface Requirement {
     }
 }
 
-public typealias RequirementBuilder<E, P> = context(RequirementContext<E>) P.() -> Unit
 public typealias ContextualRequirementBuilder<E, P, C> = context(RequirementContext<E>) P.(C) -> Unit
+public typealias RequirementBuilder<E, P> = ContextualRequirementBuilder<E, P, Unit>
 
 public sealed interface RequirementContext<E> {
     public val action: Action
