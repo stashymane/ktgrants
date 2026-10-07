@@ -6,12 +6,12 @@ import dev.stashy.ktgrants.authorization.RequirementBuilder
 import dev.stashy.ktgrants.authorization.RequirementContextImpl
 import dev.stashy.ktgrants.permissions.PermissionConfig
 
-public interface Authorizer<E, P : PermissionConfig> {
+public interface Authorizer<E : Any, P : PermissionConfig> {
     context(config: P)
     public fun verify(entity: E, actor: Actor, action: Action): Boolean
 
     public companion object {
-        public operator fun <E, P : PermissionConfig> invoke(
+        public operator fun <E : Any, P : PermissionConfig> invoke(
             builder: RequirementBuilder<E, P>
         ): Authorizer<E, P> = AuthorizerDelegate(builder)
     }
@@ -29,7 +29,7 @@ public interface ContextualAuthorizer<E, P : PermissionConfig, C> {
     }
 }
 
-internal class AuthorizerDelegate<E, P : PermissionConfig>(
+internal class AuthorizerDelegate<E : Any, P : PermissionConfig>(
     private val builder: RequirementBuilder<E, P>
 ) : Authorizer<E, P> {
     context(config: P)

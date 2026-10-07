@@ -1,14 +1,25 @@
 package dev.stashy.ktgrants.authorization.api
 
+import dev.stashy.ktgrants.authorization.Action
 import dev.stashy.ktgrants.permissions.Permission
+import dev.stashy.ktgrants.permissions.PermissionConfig
 import dev.stashy.ktgrants.permissions.PermissionPolicy
 import dev.stashy.ktgrants.permissions.SubjectProvider
 import dev.stashy.ktgrants.permissions.api.PermissionHolder
 
 public interface Actor : SubjectProvider, PermissionHolder {
+    context(config: P)
+    public fun <E : Authorized<E, P>, P : PermissionConfig> authorize(
+        action: Action,
+        entity: E
+    ): Boolean = entity.authorizer.verify(entity, this, action)
+
     public companion object {
-        public fun create(policy: PermissionPolicy, subject: SubjectProvider, permissions: Set<Permission>): Actor =
-            ActorDelegate(policy, subject, permissions)
+        public fun create(
+            policy: PermissionPolicy,
+            subject: SubjectProvider,
+            permissions: Set<Permission>
+        ): Actor = ActorDelegate(policy, subject, permissions)
     }
 }
 
