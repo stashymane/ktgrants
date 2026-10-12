@@ -23,22 +23,13 @@ jobs:
     name: Prepare version information
     runs-on: ubuntu-latest
     outputs:
-      version-name: ${{ steps.prepare-release-version.outputs.version-name || steps.prepare-snapshot-version.outputs.version-name }}
+      version-name: ${{ steps.version.outputs.version }}
     steps:
-      - name: Prepare release version
-        id: prepare-release-version
-        if: inputs.snapshot == false
-        run: |
-          TAG_NAME="${{ github.ref_name }}"
-          VERSION_NAME="${TAG_NAME#v}"
-          echo "version-name=$VERSION_NAME" >> $GITHUB_OUTPUT
-
-      - name: Prepare snapshot version
-        id: prepare-snapshot-version
-        if: inputs.snapshot == true
-        run: |
-          VERSION_NAME="$(date -u '+%Y%m%d')-SNAPSHOT"
-          echo "version-name=$VERSION_NAME" >> $GITHUB_OUTPUT
+      - name: Resolve version
+        id: version
+        uses: stashymane/actions/get-version@a4bdc027bd0aa9a31b817f406294bf0070c6ec76
+        with:
+          snapshot: ${{ inputs.snapshot }}
 
   publish:
     name: Publish ${{ needs.prepare.outputs.version-name }}
@@ -54,7 +45,7 @@ jobs:
           submodules: 'true'
 
       - name: Prepare Java & Gradle
-        uses: stashymane/actions/prepare-gradle@c9e698913231b3dd5b75dc4d7dfc062242f92188
+        uses: stashymane/actions/prepare-gradle@a4bdc027bd0aa9a31b817f406294bf0070c6ec76
         with:
           gradle-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
           cache-overwrite-existing: 'true'
