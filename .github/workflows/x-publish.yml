@@ -54,7 +54,7 @@ jobs:
           submodules: 'true'
 
       - name: Prepare Java & Gradle
-        uses: ./.github/actions/prepare-gradle
+        uses: stashymane/actions/prepare-gradle@c9e698913231b3dd5b75dc4d7dfc062242f92188
         with:
           gradle-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
           cache-overwrite-existing: 'true'
@@ -76,7 +76,7 @@ jobs:
 
       - name: Upload static files as artifact
         id: docs-deployment
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: docs/build/dokka/html/
 
@@ -91,4 +91,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5

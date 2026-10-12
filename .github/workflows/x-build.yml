@@ -16,7 +16,7 @@ jobs:
           submodules: 'true'
 
       - name: Prepare Java & Gradle
-        uses: ./.github/actions/prepare-gradle
+        uses: stashymane/actions/prepare-gradle@c9e698913231b3dd5b75dc4d7dfc062242f92188
         with:
           gradle-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
           cache-overwrite-existing: 'true'
